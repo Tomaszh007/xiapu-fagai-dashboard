@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>霞浦县发改局项目批复看板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { min-height: 100%; scroll-behavior: smooth; }
+body {
+  position: relative;
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Noto Sans SC", sans-serif;
+  color: #1f2d3d; line-height: 1.7; -webkit-font-smoothing: antialiased;
+  max-width: 1400px; margin: 0 auto; padding: 24px 28px;
+  background: linear-gradient(160deg, #f8fafc 0%, #ffffff 45%, #cfe0f5 100%);
+  min-height: 100vh;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 35% at 18% 8%, rgba(255,255,255,0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 88% 90%, rgba(255,255,255,0.45) 0%, transparent 55%);
+}
+body > * { position: relative; z-index: 1; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; align-items: start; }
+.topnav {
+  position: sticky; top: 12px; z-index: 50;
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  padding: 8px 10px; margin: 0 0 8px 0;
+  background: rgba(255,255,255,0.94); border: 1px solid #dbe4ef; border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(15,30,51,0.08);
+}
+.topnav a {
+  padding: 5px 14px; border-radius: 20px; font-size: 13px;
+  color: #5b6b80; text-decoration: none; background: #f8fafc; border: 1px solid transparent;
+  transition: color .15s, background .15s, border-color .15s;
+}
+.topnav a:hover { color: #2563eb; background: #e8f0fe; border-color: #3b82f6; }
+.topnav .nav-total { margin-left: auto; font-size: 12px; color: #5b6b80; padding: 0 6px; }
+#sec1,#sec2,#sec3,#sec4,#sec5 { scroll-margin-top: 76px; }
+.title {
+  position: relative; overflow: hidden; padding: 40px 36px; text-align: center;
+  background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 50%, #4f8ef7 100%);
+  color: #ffffff; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+.title::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 82%, rgba(255,255,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 40% at 82% 18%, rgba(255,255,255,0.08) 0%, transparent 55%);
+}
+.title > * { position: relative; z-index: 1; }
+.title h1 { font-size: 28px; font-weight: 800; margin: 0 0 14px 0; letter-spacing: 1px; color: #ffffff; }
+.title .accent-line { width: 48px; height: 3px; background: rgba(255,255,255,0.85); margin: 0 auto 18px; border-radius: 2px; }
+.title p { font-size: 15px; color: rgba(255,255,255,0.88); margin: 0; line-height: 1.7; }
+.title .badge {
+  display: inline-block; margin-top: 14px; padding: 4px 14px;
+  background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 20px; font-size: 12px; color: #fff; letter-spacing: 1px;
+}
+h1.heading { font-size: 24px; color: #0f1e33; margin: 22px 0 14px 0; font-weight: 700; border-left: 4px solid #3b82f6; padding-left: 14px; }
+h2.heading { font-size: 20px; color: #0f1e33; margin: 22px 0 10px; padding-bottom: 8px; border-bottom: 2px solid #c9d6f3; font-weight: 600; }
+.stat-grid { display: flex; gap: 16px; margin: 0 0 16px 0; }
+.stat {
+  flex: 1; text-align: center; padding: 20px;
+  background: #ffffff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border-top: 3px solid #3b82f6;
+}
+.stat .num { font-size: 30px; color: #3b82f6; font-weight: 800; line-height: 1.1; }
+.stat .num small { font-size: 14px; font-weight: 600; }
+.stat .label { font-size: 12px; color: #5b6b80; margin-top: 6px; }
+.stat .num.dark { color: #0f1e33; }
+.stat .num.warn { color: #d97706; }
+.trend-card { background: #ffffff; padding: 24px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin: 0 0 16px 0; }
+.trend-card h3 { font-size: 18px; color: #0f1e33; margin: 0 0 8px 0; font-weight: 700; }
+.trend-card .note { font-size: 12px; color: #5b6b80; margin: 8px 0 0 0; }
+.chart-row { display: flex; gap: 6px; align-items: flex-end; height: 92px; margin: 0 0 10px 0; }
+.chart-row .bar { flex: 1; border-radius: 3px 3px 0 0; min-height: 4px; background: linear-gradient(180deg, #3b82f6, #c9d6f3); }
+.bar-cell { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; cursor: pointer; }
+.bar-cell .bar { width: 100%; flex: none; }
+.bar-val { font-size: 12px; font-weight: 700; color: #2563eb; line-height: 1; margin-bottom: 3px; }
+.bar-cell:hover .bar { filter: brightness(1.12); }
+.bar-cell.active .bar { outline: 2px solid #2563eb; outline-offset: 2px; }
+.chart-labels { display: flex; gap: 6px; margin-top: 2px; }
+.chart-labels span { flex: 1; text-align: center; font-size: 11px; color: #5b6b80; cursor: pointer; border-radius: 4px; }
+.chart-labels span:hover { color: #2563eb; text-decoration: underline; }
+.chart-labels span.active { color: #2563eb; font-weight: 700; }
+.hbar-row { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+.hbar-item { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 4px 6px; margin: 0 -6px; border-radius: 8px; transition: background .15s; }
+.hbar-item:hover { background: #f1f6ff; }
+.hbar-item.active { background: #e8f0fe; }
+.hbar-item.active .hbar-label b { text-decoration: underline; }
+.hbar-label { width: 120px; font-size: 13px; color: #1f2d3d; text-align: right; }
+.hbar-label b { color: #3b82f6; font-weight: 800; }
+.hbar-track { flex: 1; background: #e8f0fe; border-radius: 6px; height: 18px; overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: 6px; }
+.table-wrap { background: #ffffff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow: hidden; margin: 0 0 16px 0; }
+.table-caption {
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  background: linear-gradient(135deg, #c9d6f3, #e8f0fe); color: #0f1e33; font-size: 14px; font-weight: 600;
+  border-bottom: 1px solid #dbe4ef;
+}
+.cap-right { display: flex; align-items: center; gap: 8px; font-weight: 400; font-size: 12px; color: #5b6b80; }
+.search-input {
+  padding: 6px 12px; border: 1px solid #dbe4ef; border-radius: 20px; font-size: 12.5px;
+  color: #1f2d3d; background: #ffffff; outline: none; width: 200px; font-family: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.search-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+.filter-tag {
+  display: none; align-items: center; gap: 6px; padding: 2px 6px 2px 12px;
+  background: #ffffff; border: 1px solid #3b82f6; border-radius: 20px; font-size: 12px; font-weight: 600; color: #2563eb;
+}
+.filter-tag.visible { display: inline-flex; }
+.filter-tag .filter-x { border: none; background: transparent; color: #5b6b80; cursor: pointer; font-size: 13px; padding: 0 4px; font-family: inherit; line-height: 1; }
+.filter-tag .filter-x:hover { color: #d97706; }
+.table-scroll { overflow-x: auto; }
+table.table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; min-width: 780px; }
+table.table thead th {
+  padding: 11px 14px; text-align: left; background: #c9d6f3; color: #0f1e33; font-weight: 700;
+  border-bottom: 2px solid #dbe4ef; word-break: break-word; white-space: nowrap; cursor: pointer; user-select: none;
+}
+table.table thead th:hover { background: #bccdf0; }
+table.table thead th .ar { opacity: .35; margin-left: 3px; font-size: 10px; }
+table.table thead th.sorted .ar { opacity: 1; color: #2563eb; }
+table.table tbody td { padding: 9px 14px; border-bottom: 1px solid #dbe4ef; color: #1f2d3d; word-break: break-word; }
+table.table tbody tr { cursor: pointer; transition: background .12s; }
+table.table tbody tr:hover { background: #f1f6ff; }
+td.nm { max-width: 380px; }
+td.nm .t { font-weight: 500; line-height: 1.5; }
+td.nm .x { font-size: 11.5px; color: #5b6b80; margin-top: 2px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; white-space: nowrap; }
+.tag-ks { background: #e8f0fe; color: #2563eb; }
+.tag-sj { background: #eef5ff; color: #0f1e33; }
+.tag-lx { background: #e6f4ea; color: #16a34a; }
+.money { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 500; }
+.money.big { color: #d97706; font-weight: 700; }
+.date { color: #1f2d3d; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.docno { font-size: 11.5px; color: #5b6b80; white-space: nowrap; }
+.empty { padding: 44px; text-align: center; color: #5b6b80; font-size: 13px; }
+.row-hint { font-size: 11px; color: #8ea0b5; margin-top: 3px; text-align: right; padding: 6px 16px 0; }
+.pager { display: flex; gap: 6px; justify-content: center; align-items: center; padding: 12px 16px; border-top: 1px solid #dbe4ef; flex-wrap: wrap; }
+.pager-btn { min-width: 32px; height: 32px; padding: 0 10px; border: 1px solid #dbe4ef; background: #ffffff; color: #1f2d3d; font-size: 13px; border-radius: 6px; cursor: pointer; font-family: inherit; transition: border-color .15s, color .15s; }
+.pager-btn:hover:not(:disabled):not(.active) { border-color: #3b82f6; color: #2563eb; }
+.pager-btn.active { background: #3b82f6; border-color: #3b82f6; color: #ffffff; font-weight: 600; }
+.pager-btn:disabled { opacity: .4; cursor: default; }
+.pager-info { font-size: 12px; color: #5b6b80; }
+.pager-nums { display: flex; gap: 6px; }
+.callout { margin: 16px 0; padding: 16px 24px; background: #e8f0fe; border-left: 4px solid #3b82f6; border-radius: 8px; }
+.callout p { font-size: 15px; color: #1f2d3d; margin: 0; line-height: 1.8; }
+.source-list { margin: 0; }
+.source-list ol { padding-left: 20px; font-size: 13px; color: #5b6b80; line-height: 2.0; }
+.source-list .src-id { display: inline-block; width: 24px; font-weight: 700; color: #3b82f6; }
+.source-list .source-link { color: #2563eb; text-decoration: none; border-bottom: 1px solid rgba(59,130,246,0.35); }
+.mask { position: fixed; inset: 0; background: rgba(15,23,42,.42); opacity: 0; pointer-events: none; transition: opacity .22s; z-index: 40; }
+.mask.on { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; right: 0; height: 100%; width: min(680px, 94vw);
+  background: #ffffff; z-index: 50; transform: translateX(100%);
+  transition: transform .26s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; box-shadow: -6px 0 24px rgba(15,30,51,.16);
+}
+.drawer.on { transform: translateX(0); }
+.dr-hd { padding: 18px 24px 14px; border-bottom: 1px solid #dbe4ef; background: #f8fafc; }
+.dr-hd .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.dr-hd h3 { font-size: 16.5px; font-weight: 600; line-height: 1.45; color: #0f1e33; padding-right: 26px; }
+.dr-close {
+  position: absolute; top: 14px; right: 16px; width: 28px; height: 28px; border: none;
+  background: transparent; font-size: 20px; color: #5b6b80; cursor: pointer; border-radius: 5px; line-height: 1;
+}
+.dr-close:hover { background: #e8f0fe; color: #0f1e33; }
+.dr-body { flex: 1; overflow-y: auto; padding: 20px 24px 40px; }
+.kv { display: grid; grid-template-columns: 82px 1fr; gap: 9px 14px; margin-bottom: 20px; font-size: 13px; }
+.kv .k { color: #5b6b80; font-size: 12.5px; }
+.kv .v { color: #1f2d3d; word-break: break-all; }
+.kv .v b { color: #d97706; font-size: 15px; }
+.sec-t { font-size: 12px; color: #5b6b80; letter-spacing: 1px; margin-bottom: 10px; padding-bottom: 7px; border-bottom: 1px dashed #dbe4ef; }
+.doc-txt {
+  white-space: pre-wrap; font-size: 13.5px; line-height: 1.95; color: #1f2d3d;
+  background: #f8fafc; border: 1px solid #e2e9f2; border-radius: 8px; padding: 16px 18px;
+}
+.dr-ft { padding: 12px 24px; border-top: 1px solid #dbe4ef; background: #f8fafc; display: flex; gap: 10px; align-items: center; }
+.dr-ft a {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #3b82f6;
+  color: #fff; border-radius: 6px; text-decoration: none; font-size: 13px; transition: background .15s;
+}
+.dr-ft a:hover { background: #2563eb; }
+@media screen and (max-width: 1080px) { .grid-2 { grid-template-columns: 1fr; gap: 0; } }
+@media screen and (max-width: 600px) {
+  body { padding: 12px !important; }
+  h1 { font-size: 20px !important; } h2 { font-size: 17px !important; }
+  .stat-grid { flex-direction: column; }
+  .hbar-label { width: 90px; font-size: 12px; }
+  .topnav { position: static; }
+  .search-input { width: 130px; }
+}
+@media print {
+  body { padding: 0 !important; margin: 0 !important; background: #f4f7fb; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body::before, .topnav, .pager, .search-input { display: none !important; }
+  .title { border-radius: 0; box-shadow: none; }
+  .stat, .trend-card, .table-wrap { box-shadow: none; border: 1px solid #dbe4ef; }
+  .grid-2 { display: block !important; }
+  table.table { min-width: 0; }
+}
+</style>
+</head>
+<body class="mode-dashboard" data-palette="ink-blue">
+
+<section class="title">
+  <h1>霞浦县发改局项目批复看板</h1>
+  <div class="accent-line"></div>
+  <p id="titleSub">统计周期</p>
+  <span class="badge">项目审批动态监控 · 点击明细行查看批复原文</span>
+</section>
+
+<nav class="topnav">
+  <a href="#sec1">核心指标</a>
+  <a href="#sec2">月度趋势</a>
+  <a href="#sec3">类型分布</a>
+  <a href="#sec4">项目明细</a>
+  <a href="#sec5">业务洞察</a>
+  <span class="nav-total" id="navTotal"></span>
+</nav>
+
+<h1 class="heading" id="sec1">一、核心指标</h1>
+<div class="stat-grid" data-cols="4" id="statGrid"></div>
+<p class="paragraph" style="font-size:14px;color:#5b6b80;margin:0 0 8px 0;" id="sec1Note"></p>
+
+<div class="grid-2" data-cols="2">
+  <div id="sec2">
+    <h1 class="heading">二、月度发布趋势</h1>
+    <div class="trend-card">
+      <h3>近半年各月批复发布数量</h3>
+      <div class="chart-row" id="chartRow"></div>
+      <div class="chart-labels" id="chartLabels"></div>
+      <p class="note">点击柱子或月份标签，可跳到下方明细表并只显示该月批复。</p>
+    </div>
+  </div>
+  <div id="sec3">
+    <h1 class="heading">三、批复类型分布</h1>
+    <div class="trend-card">
+      <h3>可研 / 设计 / 立项批复占比与投资</h3>
+      <div class="hbar-row" id="hbarRow"></div>
+      <p class="note">点击任意类型条目，可跳到下方明细表并只显示该类批复。</p>
+    </div>
+  </div>
+</div>
+
+<h1 class="heading" id="sec4">四、批复项目明细</h1>
+<div class="table-wrap">
+  <div class="table-caption">
+    <span>霞浦县发改局近半年批复项目清单
+      <span class="filter-tag" id="filterTag"><span id="filterText"></span><button class="filter-x" id="filterX" type="button" aria-label="清除筛选">✕</button></span>
+    </span>
+    <span class="cap-right">
+      <input type="search" class="search-input" id="q" placeholder="搜索项目 / 单位 / 文号 / 正文…">
+    </span>
+  </div>
+  <div class="table-scroll">
+  <table class="table" id="pfTable">
+    <colgroup>
+      <col style="width:11%"><col style="width:10%"><col style="width:37%"><col style="width:11%"><col style="width:16%"><col style="width:15%">
+    </colgroup>
+    <thead>
+      <tr>
+        <th data-sort="d">发布日期<span class="ar">▼</span></th>
+        <th data-sort="c">类型<span class="ar">▼</span></th>
+        <th data-sort="n">项目名称 / 建设单位<span class="ar">▼</span></th>
+        <th data-sort="m">投资额<span class="ar">▼</span></th>
+        <th data-sort="no">文号<span class="ar">▼</span></th>
+        <th data-sort="dd">成文日期<span class="ar">▼</span></th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  </div>
+  <div class="row-hint">点击行查看批复正文详情</div>
+  <div class="pager">
+    <button class="pager-btn" id="pfPrev" aria-label="上一页">上一页</button>
+    <div class="pager-nums" id="pfNums"></div>
+    <button class="pager-btn" id="pfNext" aria-label="下一页">下一页</button>
+    <span class="pager-info" id="pfInfo"></span>
+  </div>
+</div>
+
+<div class="grid-2" data-cols="2">
+  <div id="sec5">
+    <h1 class="heading">五、业务洞察</h1>
+    <aside class="callout" data-variant="tip">
+      <p id="insightText"></p>
+    </aside>
+  </div>
+  <div>
+    <h2 class="heading">主要数据来源</h2>
+    <div class="source-list">
+      <ol class="list">
+        <li id="source-1"><span class="src-id">[1]</span> <a class="source-link" href="http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/" target="_blank">霞浦县人民政府·霞浦县发展和改革局「政策文件」栏目</a>，批复文件全文（抓取时间 <span id="genTime"></span>）</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="mask" id="mask"></div>
+<div class="drawer" id="drawer">
+  <button class="dr-close" id="drClose" aria-label="关闭">×</button>
+  <div class="dr-hd">
+    <div class="row1" id="drTags"></div>
+    <h3 id="drTitle"></h3>
+  </div>
+  <div class="dr-body" id="drBody">
+    <div class="kv" id="drKv"></div>
+    <div class="sec-t">批复正文</div>
+    <div class="doc-txt" id="drTxt"></div>
+  </div>
+  <div class="dr-ft">
+    <a id="drLink" href="#" target="_blank" rel="noopener">查看原文 ↗</a>
+  </div>
+</div>
+
+<script>
+const DB = {"items":[{"i":0,"c":"设计批复","n":"霞浦县东冲半岛北壁段旅游基础设施提升工程","no":"霞发改审批〔2026〕92号","d":"2026-09-30","dd":"2026-09-21","u":"霞浦县北壁乡人民政府","loc":"霞浦县北壁乡","m":16713.94,"dur":"","fund":"申请专项债资金及业主自筹","code":"2412-350921-04-01-971607","t":"霞浦县发展和改革局关于霞浦县东冲半岛北壁段旅游基础设施提升工程初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260930_2487707.htm","txt":"霞浦县北壁乡人民政府：\n 报来《北壁乡人民政府关于要求审批霞浦县东冲半岛北壁段旅游基础设施提升工程初步设计及概算的请示》（霞北政〔2025〕74号）及相关材料收悉。经研究，原则同意霞浦县东冲半岛北壁段旅游基础设施提升工程（项目代码：2412-350921-04-01-971607）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县东冲半岛北壁段旅游基础设施提升工程。\n 二、项目建设地点：霞浦县北壁乡。\n 三、项目单位：霞浦县北壁乡人民政府。\n 四、项目建设规模及主要内容：本项目主要涉及北壁村、河山村、上岐村、下岐村、东冲村、池澳村、盘前村，主要建设内容包含3部分。\n 主要利用现状提升改造北壁村旅游集散中心，建筑面积约5323.52㎡；利用现状提升改造河山村旅游文化综合中心改造提升，建筑面积约500㎡；利用现状提升改造游客服务中心4处，总建筑面积约2183.06㎡，其中东冲村游客中心面积593.68㎡、盘前潭头澳小学旁改造提升游客服务中心1面积413.77㎡、盘前潭头澳小学旁改造提升游客服务中心2面积761.84㎡、下岐村游客服务中心面积413.77㎡；利用现状提升改造东冲村驿站，建筑面积约60㎡；\n 生态旅游步道11条，总长度10110m，其中北壁村3条、河山村1条、东冲村4条、池澳村2条、盘前村1条；盘前村景区连接线路2条长度约1020m；栈道4条约2300m，其中北壁村1条、河山村1条、上岐村1条、盘前村1条；移动式旅游公厕12处，总建筑面积约478㎡；生态停车场9处，面积约8138㎡，其中河山村2处、东冲村3处，池澳村2处、盘前村2处；并配套旅游主题节点。\n 配套建设智慧化工程，由智慧景区数字旅游平台、综合安防管理平台和信息化基础设施和三个部分组成，其中综合安防管理平台对视频监控系统、车辆进出管理系统、人员考勤及门禁系统、智能巡查系统；信息化基础设施包含有线网络、无线覆盖、展厅大屏及扩声系统、配套的系统软硬件以及通信线路租赁等。\n 五、工程概算：项目概算总投资16713.94万元，资金来源为申请专项债资金及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":1,"c":"设计批复","n":"霞浦县沙江镇涵江村人居环境及生产道路提升项目","no":"霞发改审批〔2026〕91号","d":"2026-09-30","dd":"2026-09-16","u":"霞浦县沙江镇人民政府","loc":"霞浦县沙江镇涵江村","m":142.23,"dur":"","fund":"申请中央专项彩票公益金及业主自筹","code":"2511-350921-04-05-322387","t":"霞浦县发展和改革局关于霞浦县沙江镇涵江村人居环境及生产道路提升项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260930_2487705.htm","txt":"霞浦县沙江镇人民政府：\n 报来《沙江镇人民政府关于要求审批霞浦县沙江镇涵江村人居环境及生产道路提升项目初步设计及概算的报告》（霞沙政〔2026〕32号）及相关材料收悉。经研究，原则同意霞浦县沙江镇涵江村人居环境及生产道路提升项目（项目代码：2511-350921-04-05-322387）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县沙江镇涵江村人居环境及生产道路提升项目。\n 二、项目建设地点：霞浦县沙江镇涵江村。\n 三、项目单位：霞浦县沙江镇人民政府。\n 四、项目建设规模及主要内容：项目拟对霞浦县沙江镇涵江村人居环境及生产道路进行提升改造，建设内容包含:\n （一）村东侧2条生产步道硬化，长度分别约565米和387米，宽约2.6米;（二）村内主干道西入口至东入口沿线路缘石、树穴及人行道铺装修复，宽约1.5-2.5米，两侧合计长约1.4公里。（三）路口等处增加数字监控。\n 五、工程概算：项目概算总投资142.23万元，资金来源为申请中央专项彩票公益金及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":2,"c":"可研批复","n":"霞浦县盐田畲族乡水升海堤除险修复工程","no":"霞发改审批〔2026〕90号","d":"2026-09-16","dd":"2026-09-10","u":"霞浦县盐田畲族乡人民政府","loc":"霞浦县盐田畲族乡水升村","m":270.75,"dur":"6个月","fund":"申请中央预算内资金及地方财政配套","code":"2609-350921-04-01-162688","t":"霞浦县发展和改革局关于霞浦县盐田畲族乡水升海堤除险修复工程建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482424.htm","txt":"霞浦县盐田畲族乡人民政府：\n 报来《关于要求审批霞浦县盐田畲族乡水升海堤除险修复工程建议书暨可行性研究报告的请示》（霞盐政〔2026〕44号）收悉。经研究，现批复如下：\n 一、本项目对于消除水毁隐患、保护人民群众生命财产安全、完善防潮体系具有重要意义，原则同意项目建设。\n 二、项目名称：\n 霞浦县盐田畲族乡水升海堤除险修复工程（项目编码：2609-350921-04-01-162688）。\n 三、项目建设地点：霞浦县盐田畲族乡水升村。\n 四、建设单位：霞浦县盐田畲族乡人民政府。\n 五、项目建设规模及主要内容：霞浦县盐田畲族乡水升村海堤全长700m，本项目在原址上修复加固，本次工程加固海堤长202m，加固的主要规模和内容有：\n （一）本工程海堤桩号SS0+162.65~SS0+364.37渗漏较为严重，建设背水坡压载155m，建设水泥搅拌桩防渗墙202m。\n （二）水升水闸翼墙渗漏严重，修复应急加固长20m。\n 六、项目投资估算及资金来源：\n 项目总投资为270.75万元，资金来源为申请中央预算内资金及地方财政配套。\n 七、项目建设工期：6个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、施工、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":3,"c":"可研批复","n":"松城街道水毁道路灾后修复项目","no":"霞发改审批〔2026〕89号","d":"2026-09-16","dd":"2026-09-10","u":"霞浦县人民政府松城街道办事处","loc":"霞浦县松城街道","m":297.0299,"dur":"3个月","fund":"申请中央预算内资金及地方财政配套","code":"2609-350921-04-01-389679","t":"霞浦县发展和改革局关于松城街道水毁道路灾后修复项目建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482423.htm","txt":"霞浦县人民政府松城街道办事处：\n 报来《霞浦县人民政府松城街道办事处关于要求审批松城街道水毁道路灾后修复项目建议书暨可行性研究报告的请示》（霞城函〔2026〕42号）收悉。经研究，现批复如下：\n 一、本项目对于提高应急救灾基础设施条件、保障人民生命财产安全具有重要意义，原则同意项目建设。\n 二、项目名称：\n 松城街道水毁道路灾后修复项目（项目编码：2609-350921-04-01-389679）。\n 三、项目建设地点：霞浦县松城街道。\n 四、建设单位：\n 霞浦县人民政府松城街道办事处。\n 五、项目建设规模及主要内容：本项目共包含3个村，分别为彩虹社区倒虹管、宝清村、立新新村。主要修复内容如下：修复路面863.95㎡；盖板边沟176m；边沟222.7m；排水沟14m；预埋管16.8m；路基换填320㎡；混凝土护栏79m；路基挡土墙1184.2m³；护脚679.4m³。\n 六、项目投资估算及资金来源：\n 项目总投资为297.0299万元，资金来源为申请中央预算内资金及地方财政配套。\n 七、项目建设工期：3个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、施工、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":4,"c":"可研批复","n":"霞浦县松港街道竹下村罗汉溪引水渠道修复工程","no":"霞发改审批〔2026〕88号","d":"2026-09-16","dd":"2026-09-10","u":"霞浦县人民政府松港街道办事处","loc":"霞浦县松港街道竹下村","m":218.23,"dur":"6个月","fund":"申请中央预算内资金及地方财政配套","code":"2609-350921-04-01-581723","t":"霞浦县发展和改革局关于霞浦县松港街道竹下村罗汉溪引水渠道修复工程建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482422.htm","txt":"霞浦县人民政府松港街道办事处：\n 报来《霞浦县人民政府松港街道办事处关于要求审批霞浦县松港街道竹下村罗汉溪引水渠道修复工程项目建议书暨可行性研究报告的请示》（霞港办〔2026〕84号）收悉。经研究，现批复如下：\n 一、本项目对于消除水毁隐患、提升灾后修复能力及保护群众生命财产安全具有重要意义，原则同意项目建设。\n 二、项目名称：\n 霞浦县松港街道竹下村罗汉溪引水渠道修复工程（项目编码：2609-350921-04-01-581723）。\n 三、项目建设地点：\n 霞浦县松港街道竹下村。\n 四、建设单位：霞浦县人民政府松港街道办事处。\n 五、项目建设规模及主要内容：后洋段水毁修复100m，青头里段（右侧）水毁修复300m，水磨坑段水毁修复30m，罗汉溪引水渠道整修加固1820m；渠道清淤疏浚4.231km；闸门维修更换4座。\n 六、项目投资估算及资金来源：项目总投资为218.23万元，资金来源为申请中央预算内资金及地方财政配套。\n 七、项目建设工期：6个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、施工、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":5,"c":"可研批复","n":"霞浦县牙城镇灾毁修复项目","no":"霞发改审批〔2026〕87号","d":"2026-09-16","dd":"2026-09-10","u":"霞浦县牙城镇人民政府","loc":"霞浦县牙城镇","m":243.37,"dur":"10个月","fund":"申请中央预算内资金及地方财政配套","code":"2609-350921-04-01-218614","t":"霞浦县发展和改革局关于霞浦县牙城镇灾毁修复项目建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482416.htm","txt":"霞浦县牙城镇人民政府：\n 报来《牙城镇人民政府关于要求审批霞浦县牙城镇灾毁修复项目建议书及可行性研究报告的请示》（霞牙政〔2026〕32号）收悉。经研究，现批复如下：\n 一、本项目对于消除水毁隐患、提升灾后修复能力及保护群众生命财产安全具有重要意义，原则同意项目建设。\n 二、项目名称：\n 霞浦县牙城镇灾毁修复项目（项目编码：2609-350921-04-01-218614）。\n 三、项目建设地点：霞浦县牙城镇。\n 四、建设单位：霞浦县牙城镇人民政府。\n 五、项目建设规模及主要内容：\n （一）七都溪渡头取水堰坝坝头亲水平台修复约700㎡。\n （二）洋尾溪水库坝顶栏杆修复512m，管理房修缮88㎡。\n （三）王家山山塘加固：大坝防渗加固，重建背水坡护坡及相关附属设施。\n （四）梅花水闸滞洪区清淤11亩。\n 六、项目投资估算及资金来源：项目总投资为243.37万元，资金来源为申请中央预算内资金及地方财政配套。\n 七、项目建设工期：10个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：\n 根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、施工、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":6,"c":"可研批复","n":"霞浦县水门畲族乡道路水毁塌方修复工程","no":"霞发改审批〔2026〕86号","d":"2026-09-16","dd":"2026-09-09","u":"霞浦县水门畲族乡人民政府","loc":"霞浦县水门畲族乡","m":252.3706,"dur":"3个月","fund":"申请中央预算内资金及地方财政配套","code":"2609-350921-04-01-674995","t":"霞浦县发展和改革局关于霞浦县水门畲族乡道路水毁塌方修复工程建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482415.htm","txt":"霞浦县水门畲族乡人民政府：\n 报来《霞浦县水门畲族乡人民政府关于要求审批霞浦县水门畲族乡道路水毁塌方修复工程建议书暨可行性研究报告的请示》（霞水政〔2026〕33号）收悉。经研究，现批复如下：\n 一、本项目对于消除地质灾害隐患、提升灾后修复能力及保障当地人民生命安全具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县水门畲族乡道路水毁塌方修复工程（项目编码：2609-350921-04-01-674995）。\n 三、项目建设地点：霞浦县水门畲族乡。\n 四、建设单位：霞浦县水门畲族乡人民政府。\n 五、项目建设规模及主要内容：本项目位于霞浦县水门乡，主要修复内容如下：挡土墙及护面墙1488.64立方米；混凝土路面749立方米；边沟68米；护栏80米；清理塌方边坡41处。\n 六、项目投资估算及资金来源：项目总投资为252.3706万元，资金来源为申请中央预算内资金及地方财政配套。\n 七、项目建设工期：3个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、施工、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":7,"c":"立项批复","n":"“千鲜霞浦”文商旅综合体及大宗水产品交易中心项目配套路网建设工程建议书","no":"霞发改审批〔2026〕85号","d":"2026-09-16","dd":"2026-09-08","u":"霞浦县城市建设投资有限公司","loc":"福建省霞浦县松港组团","m":38232.61,"dur":"","fund":"县财政资金","code":"2609-350921-04-01-482057","t":"霞浦县发展和改革局关于“千鲜霞浦”文商旅综合体及大宗水产品交易中心项目配套路网建设工程建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482414.htm","txt":"霞浦县城市建设投资有限公司：\n 报来《关于要求审批“千鲜霞浦”文商旅综合体及大宗水产品交易中心项目配套路网建设工程建议书的请示》（霞城投〔2026〕84号）及有关附件收悉。经研究，原则同意“千鲜霞浦”文商旅综合体及大宗水产品交易中心项目配套路网建设工程（项目编码：2609-350921-04-01-482057）开展前期工作。具体批复如下：\n 一、项目名称：“千鲜霞浦”文商旅综合体及大宗水产品交易中心项目配套路网建设工程。\n 二、项目建设地点：福建省霞浦县松港组团。\n 三、项目单位：霞浦县城市建设投资有限公司。\n 四、项目建设规模及主要内容：\n 本项目包含三条道路：\n （一）松山大道北（宁远路至圣水路）整体呈南北走向，南起于SSK0+000宁远路，北至SSK0+965.588圣水路，设计路线长965.588m，实际修建长901.987m（SSK0+055.013~SSK0+957），道路等级为城市主干路，设计速度为40km/h，红线宽度为40m，双向4车道。\n （二）黄瓜山路（松山大道北-六一七东路）整体呈南北走向，北起于HGSK0+000松山大道北，南至HGSK0+316.756六一七东路，设计路线长316.756m，实际修建长241.329m（HGSK0+053.688~HGSK0+295.017），道路等级为城市主干路，设计速度为40km/h，红线宽度为40m，双向6车道。\n （三）六一七东路（后港中桥东侧-古岭下村口）整体呈东西走向，西起于LYQK0+000后港中桥东侧，东至LYQK1+713.964古岭下村口，设计路线长1713.964m，实际修建长1660m（LYQK0+000~LYQK1+660），道路等级为城市次干路，设计速度为40km/h，红线宽度为20m，双向2车道。\n 主要建设内容包含：道路工程、交通工程、桥涵工程、管线工程、绿化工程、与后港排涝工程交叉设计及其他附属设施工程等。\n 五、项目总投资匡算及资金来源：38232.61万元，资金来源为县财政资金（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":8,"c":"设计批复","n":"霞浦县松城街道青福村道路沿线设施提升及人居环境改造项目","no":"霞发改审批〔2026〕83号","d":"2026-09-16","dd":"2026-09-07","u":"霞浦县人民政府松城街道办事处","loc":"霞浦县松城街道青福村","m":173.45,"dur":"","fund":"申请中央专项彩票公益金及业主自筹","code":"2510-350921-04-01-346588","t":"霞浦县发展和改革局关于霞浦县松城街道青福村道路沿线设施提升及人居环境改造项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482410.htm","txt":"霞浦县人民政府松城街道办事处：\n 报来《霞浦县人民政府松城街道办事处关于要求审批霞浦县松城街道青福村道路沿线设施提升及人居环境改造项目初步设计及概算的请示》（霞城函〔2026〕33号）及相关材料收悉。经研究，原则同意霞浦县松城街道青福村道路沿线设施提升及人居环境改造项目（项目代码：2510-350921-04-01-346588）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县松城街道青福村道路沿线设施提升及人居环境改造项目。\n 二、项目建设地点：霞浦县松城街道青福村。\n 三、项目单位：霞浦县人民政府松城街道办事处。\n 四、项目建设规模及主要内容：\n (一)村干道沿线增加路灯，道路合计2.5公里，间隔20米布置，共126盏;(二)步道栏杆更换为水泥仿木栏杆约840米，局部护岸修复，补齐缺失石板步道;(三)2座栈道桥及亭子处的面层、栏杆提升;(四)村口牌坊周边、桥头三角地花池、畲族文化广场、步道西侧小公园提升，配套增设高杆灯、石桌椅、监控设备，修复树池，绿化提升。\n 五、工程概算：项目概算总投资173.45万元，资金来源为申请中央专项彩票公益金及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":9,"c":"设计批复","n":"霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目","no":"霞发改审批〔2026〕82号","d":"2026-09-16","dd":"2026-09-01","u":"霞浦县人民政府松港街道办事处","loc":"霞浦县松港街道八斗浿村","m":130.23,"dur":"","fund":"申请中央专项彩票公益金及业主自筹","code":"2510-350921-04-01-733571","t":"霞浦县发展和改革局关于霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482409.htm","txt":"霞浦县人民政府松港街道办事处：\n 报来《关于要求审批霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目初步设计及概算的请示》（霞港办〔2026〕77号）及相关材料收悉。经研究，原则同意霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目（项目代码：2510-350921-04-01-733571）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目。\n 二、项目建设地点：霞浦县松港街道八斗浿村。\n 三、项目单位：霞浦县人民政府松港街道办事处。\n 四、项目建设规模及主要内容：霞浦县松港街道八斗浿村道路沿线设施及休闲文化广场改造提升项目，道路沿线水泥仿木栏杆127m；乡村记忆馆前铺装250m2；绿化工程380m2；长廊改造提升1套；茅草亭1座，入口案名及挡墙1处；沿线太阳能路灯83盏、太阳能庭院灯6盏；监控6套。\n 五、工程概算：项目概算总投资130.23万元，资金来源为申请中央专项彩票公益金及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":10,"c":"立项批复","n":"霞浦县县域医共体资源共享能力提升","no":"霞发改审批〔2026〕81号","d":"2026-09-16","dd":"2026-09-01","u":"霞浦县总医院","loc":"霞浦县医院、霞浦县中医院新院区","m":8500.0,"dur":"","fund":"争取中央及省级医疗卫生领域补助资金、县财政统筹安排及项目单位多渠道自筹","code":"2607-350921-04-05-683140","t":"霞浦县发展和改革局关于霞浦县县域医共体资源共享能力提升项目建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260916_2482407.htm","txt":"霞浦县总医院：\n 报来《关于要求审批霞浦县县域医共体资源共享能力提升项目建议书的请示》（霞总院〔2026〕12号）及有关附件收悉。经研究，原则同意霞浦县县域医共体资源共享能力提升项目（项目编码：2607-350921-04-05-683140）开展前期工作。具体批复如下：\n 一、项目名称：霞浦县县域医共体资源共享能力提升项目。\n 二、项目建设地点：霞浦县医院、霞浦县中医院新院区。\n 三、项目单位：霞浦县总医院。\n 四、项目建设规模及主要内容：具体包括常见病救治能力提升、新建县域介入诊疗中心、提升县域巡回医疗服务能力、县级医院重点和薄弱专科建设、县域医共体中心药房建设、县域医共体共享中药房建设六大板块。\n 新建介入中心选址于霞浦县医院院内西侧地块，为独立多层业务用房，占地面积约485平方米；提升改造县域医共体中心药房依托县医院门诊医技楼一层，约1717.60平方米；提升改造县域医共体共享中药房依托中医院区行政楼一、二层，约588平方米。\n 涉及设备购置，机房与配套建设，以及相应的软件系统与智慧医疗服务能力建设等。\n 五、项目总投资匡算及资金来源：8500万元，资金来源为争取中央及省级医疗卫生领域补助资金、县财政统筹安排及项目单位多渠道自筹（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":11,"c":"可研批复","n":"霞浦县入河排污口整治及规范化建设工程","no":"霞发改审批〔2026〕80号","d":"2026-09-01","dd":"2026-08-28","u":"霞浦县水利投资有限公司","loc":"霞浦县松城街道，以三河流域上游玉潭溪、石贝溪及三河干流等重要水体为治理重点，范围","m":6480.87,"dur":"24个月","fund":"中央水污染防治资金和地方财政资金","code":"2608-350921-04-01-721656","t":"霞浦县发展和改革局关于霞浦县入河排污口整治及规范化建设工程可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260901_2479038.htm","txt":"霞浦县水利投资有限公司：\n 报来《关于要求审批霞浦县入河排污口整治及规范化建设工程可行性研究报告的请示》（霞水投〔2026〕50号）收悉。经研究，现批复如下：\n 一、本项目对于提升城市排水防涝韧性、持续改善三河水环境质量及保障水生态安全具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县入河排污口整治及规范化建设工程（项目编码：2608-350921-04-01-721656）。\n 三、项目建设地点：霞浦县松城街道，以三河流域上游玉潭溪、石贝溪及三河干流等重要水体为治理重点，范围涵盖玉潭村、青福村等涉农村庄及山河路沿岸街道。\n 四、建设单位：霞浦县水利投资有限公司。\n 五、项目建设规模及主要内容：\n 新建DN100U-PVC埋地接户管5000m，DN150U-PVC埋地接户管2500m，DN200HDPE缠绕结构壁管550m，DN300HDPE缠绕结构壁管3750m，DN400HDPE缠绕结构壁管2073m，DN600钢筋混凝土管813m，DN800钢筋混凝土管3500m，设置2个入河排污口标识牌。\n 六、项目投资估算及资金来源：项目总投资为6480.87万元，资金来源为中央水污染防治资金和地方财政资金。\n 七、项目建设工期：24个月。\n 八、项目社会稳定风险评估意见：\n 项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：\n 根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请勘察、设计、施工、监理采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":12,"c":"立项批复","n":"霞浦县入河排污口整治及规范化建设工程建议书","no":"霞发改审批〔2026〕78号","d":"2026-09-01","dd":"2026-08-26","u":"霞浦县水利投资有限公司","loc":"霞浦县松城街道","m":6480.87,"dur":"","fund":"中央预算内资金和地方财政配套","code":"2608-350921-04-01-721656","t":"霞浦县发展和改革局关于霞浦县入河排污口整治及规范化建设工程建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260901_2479034.htm","txt":"霞浦县水利投资有限公司：\n 报来《关于要求审批霞浦县入河排污口整治及规范化建设工程建议书的请示》（霞水投〔2026〕49号）及有关附件收悉。经研究，原则同意霞浦县入河排污口整治及规范化建设工程（项目编码：2608-350921-04-01-721656）开展前期工作。具体批复如下：\n 一、项目名称：霞浦县入河排污口整治及规范化建设工程。\n 二、项目建设地点：霞浦县松城街道。\n 三、项目单位：霞浦县水利投资有限公司。\n 四、项目建设规模及主要内容：新建DN100U-PVC埋地接户管5000m，DN150U-PVC埋地接户管2500m，DN200HDPE缠绕结构壁管550m，DN300HDPE缠绕结构壁管3750m，DN400HDPE缠绕结构壁管2073m，DN600钢筋混凝土管813m，DN800钢筋混凝土管3500m，设置2个入河排污口标识牌。\n 五、项目总投资匡算及资金来源：6480.87万元，资金来源为中央预算内资金和地方财政配套（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":13,"c":"可研批复","n":"霞浦县柏洋乡饮用水源保护区环境综合整治与生态修复项目","no":"霞发改审批〔2026〕77号","d":"2026-09-01","dd":"2026-08-26","u":"霞浦县柏洋乡人民政府","loc":"福建省宁德市霞浦县柏洋乡","m":511.06,"dur":"12个月","fund":"县级饮用水源地生态补偿项目资金","code":"2603-350921-04-01-826129","t":"霞浦县发展和改革局关于霞浦县柏洋乡饮用水源保护区环境综合整治与生态修复项目建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202609/t20260901_2479031.htm","txt":"霞浦县柏洋乡人民政府：\n 报来《霞浦县柏洋乡人民政府关于要求审批霞浦县柏洋乡饮用水源保护区环境综合整治与生态修复项目建议书暨可行性研究报告的请示》（霞柏洋函〔2026〕5号）收悉。经研究，现批复如下：\n 一、本项目对于保障县城及周边地区饮水安全、实现区域可持续发展具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县柏洋乡饮用水源保护区环境综合整治与生态修复项目（项目编码：2603-350921-04-01-826129）。\n 三、项目建设地点：福建省宁德市霞浦县柏洋乡。\n 四、建设单位：霞浦县柏洋乡人民政府。\n 五、项目建设规模及主要内容：\n 项目围绕饮用水源保护区环境整治与生态修复，主要实施以下内容：\n （一）垃圾收集设施建设：中型垃圾收纳点共7个，小型垃圾收纳点共约19个。\n （二）河道修复与防护工程：沙坑段河道防抛网450米；八斗洋段河道仿古护栏435米；下坑口段河道修复20米。\n （三）污水处理提升改造工程：建设一体化污水处理站15m³/d共2座、25m³/d共1座；玻璃钢化粪池6m³/d共1座；污水管网d300共395米、d200共2150米；聚乙烯（PE）管共10米、PE100出水管共60米；接户管DN150共1320米、DN100共1056米、DN65共1056米；检查井264座；污水管破路修复（水泥路面）共1787㎡、接户管破路修复（水泥路面）共1524㎡\n 六、项目投资估算及资金来源：估算总投资为511.06万元，资金来源为县级饮用水源地生态补偿项目资金。\n 七、项目建设工期：12个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请施工采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。鉴于该项目勘察、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":14,"c":"设计批复","n":"溪南镇南岸村基础设施提升改造项目","no":"霞发改审批〔2026〕74号","d":"2026-08-03","dd":"2026-07-30","u":"霞浦县溪南镇人民政府","loc":"霞浦县溪南镇南岸村","m":153.36,"dur":"","fund":"申请中央专项彩票公益金及业主自筹","code":"2606-350921-04-05-210387","t":"霞浦县发展和改革局关于溪南镇南岸村基础设施提升改造项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202608/t20260803_2473774.htm","txt":"霞浦县溪南镇人民政府：\n 报来《霞浦县溪南镇人民政府关于要求审批溪南镇南岸村基础设施提升改造项目工程初步设计及概算的请示》（霞溪政〔2026〕35号）及相关材料收悉。经研究，原则同意溪南镇南岸村基础设施提升改造项目（项目代码：2606-350921-04-05-210387）初步设计及概算，具体批复如下：\n 一、项目名称：溪南镇南岸村基础设施提升改造项目。\n 二、项目建设地点：霞浦县溪南镇南岸村。\n 三、项目单位：霞浦县溪南镇人民政府。\n 四、项目建设规模及主要内容：\n 在南岸村道路长度约500米增加太阳能路灯约17盏；登山步道长度约842米增加庭院灯约65盏；对南岸村基础设施提升改造，增加休憩亭子、智能化健身设施、文化宣传景观小品、防护栏杆，并对夜景照明及绿化进行提升改造，增设数字监控、音响等设备。\n 五、工程概算：项目概算总投资153.36万元，资金来源为申请中央专项彩票公益金及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":15,"c":"设计批复","n":"霞浦县城区排水设施提升改造工程（一期）C标段","no":"霞发改审批〔2026〕70号","d":"2026-08-03","dd":"2026-07-21","u":"霞浦县城市建设投资有限公司","loc":"霞浦县城区","m":17379.04,"dur":"","fund":"申请超长期特别国家债券及财政局统筹安排","code":"2404-350921-04-01-993308","t":"霞浦县发展和改革局关于霞浦县城区排水设施提升改造工程（一期）C标段初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202608/t20260803_2473762.htm","txt":"霞浦县城市建设投资有限公司：\n 报来《关于要求审批霞浦县城区排水设施提升改造工程（一期）C标段初步设计及概算的报告》（霞城投〔2026〕40号）及相关材料收悉。经研究，原则同意霞浦县城区排水设施提升改造工程（一期）C标段（项目代码：2404-350921-04-01-993308）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县城区排水设施提升改造工程（一期）C标段。\n 二、项目建设地点：霞浦县城区。\n 三、项目单位：霞浦县城市建设投资有限公司。\n 四、项目建设规模及主要内容：\n 1.市政雨污水管网修复工程：针对市政道路管网病害较为严重的赤岸大道、山河路（六一七西路-东吾路）、山河路（东吾路-赤岸大道）、福宁大道、长溪路、六一七西路（长溪路-赤岸大道）、山海大道北、灵佑路、留耕路、玉山路、河沿路、罗汉溪路、柯成贵路、永康路（柯成贵路-黄瓜山路）、洲洋北路和太康路（目海路-赤岸大道）等道路现状管网进行修复改造,长度约59.9km，管径为DN300~DN2000。\n 2.东吾路以东小区及沿街店面雨污水分流工程:包括亿顺尚都、百花新村、万豪华庭、好万佳小区、万豪世家、霞辉名城、宏城豪景、万豪名仕、景缘居、弘晟小区等小区进行雨污分流改造，以及针对沿街店面排水错接混接进行整改。新建DN300~DN600排水管道，总长度共计17842m（其中雨水管9452m，污水管8390m）。\n 五、工程概算：\n 项目概算总投资17379.04万元，资金来源为申请超长期特别国家债券及财政局统筹安排。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":16,"c":"立项批复","n":"霞浦县第八中学松兴校区篮球场建设工程","no":"霞发改审批〔2026〕69号","d":"2026-08-03","dd":"2026-07-17","u":"霞浦县第八中学","loc":"霞浦县松城街道松兴社区曲井巷33号","m":112.08,"dur":"","fund":"县财政统筹安排","code":"2607-350921-04-01-939568","t":"霞浦县发展和改革局关于霞浦县第八中学松兴校区篮球场建设工程项目建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202608/t20260803_2473758.htm","txt":"霞浦县第八中学：\n 报来《关于要求审批霞浦县第八中学松兴校区篮球场建设工程项目建议书的请示》（霞八中〔2026〕19号）及有关附件收悉。经研究，原则同意霞浦县第八中学松兴校区篮球场建设工程（项目编码：2607-350921-04-01-939568）开展前期工作。具体批复如下：\n 一、项目名称：霞浦县第八中学松兴校区篮球场建设工程。\n 二、项目建设地点：霞浦县松城街道松兴社区曲井巷33号。\n 三、项目单位：霞浦县第八中学。\n 四、项目建设规模及主要内容：\n 新建长28米、宽15米、面积420平方米的标准室外篮球场1个，同步塑化面积370平方米的外围场地；旧操场翻新改造，改造面积1364平方米；新建全长68米的封闭式砖混围墙；拆除宿舍楼、围墙等。\n 五、项目总投资匡算及资金来源：112.08万元，资金来源为县财政统筹安排（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":17,"c":"可研批复","n":"霞浦县水门片区冷链物流项目","no":"霞发改审批〔2026〕68号","d":"2026-07-17","dd":"2026-07-10","u":"福建鑫水门投资发展有限公司","loc":"霞浦县水门畲族乡","m":11836.82,"dur":"","fund":"申请专项债资金及由县、乡镇财政统筹","code":"2505-350921-04-01-952133","t":"霞浦县发展和改革局关于霞浦县水门片区冷链物流项目可行性研究报告调整的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260717_2471081.htm","txt":"福建鑫水门投资发展有限公司：\n 报来《关于霞浦县水门片区冷链物流项目可行性研究报告申请变更的报告》（鑫水门投资〔2026〕2号）及相关附件收悉。霞浦县水门片区冷链物流项目可行性研究报告已由我局以霞发改审批〔2025〕84号文批复。现根据项目实际建设需要，在项目总投资不变的前提下，项目建设内容发生调整。经研究，原则同意霞浦县水门片区冷链物流项目（项目编码：2505-350921-04-01-952133）可行性研究报告建设内容调整，具体内容批复如下：\n 一、项目名称：霞浦县水门片区冷链物流项目（项目编码：2505-350921-04-01-952133）。\n 二、项目建设地点：霞浦县水门畲族乡。\n 三、项目建设规模及主要内容：本项目总用地面积12975.06平方米,建筑占地面积5751㎡,总建筑面积为23631㎡，其中地上建筑面积为22983㎡，地下建筑面积648㎡，主要建设内容包含仓储、物流、加工车间、交易中心以及水电、消防系统、配套设施等。\n 拟建一栋3#冷链库房物流仓库性质建筑,建筑面积10656㎡，库容量28000m³；拟建一栋1#车间，建筑面积5328㎡，库容量2000m³;拟建一栋2#低温冷藏加工车间，建筑面积5328㎡，库容量2000m³;拟建配套用房建筑面积1560㎡,变配电房建筑面积90㎡,门卫建筑面积21㎡；规划机动车位46辆，非机动车位420辆。\n 四、项目投资估算及资金来源：估算总投资为11836.82万元，资金来源为申请专项债资金及由县、乡镇财政统筹。\n 五、项目建设期限：24个月。\n 六、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2025〕185号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 七、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请勘察、设计、施工、监理采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。\n 八、请据此批复抓紧开展初步设计，深化其他相关前期工作，争取项目尽早开工建设。\n 九、其他事项：原霞发改审批〔2025〕84号文与本文不一致内容，以本文为准。"},{"i":18,"c":"可研批复","n":"霞浦东冲半岛外海道路工程-石人下段","no":"霞发改审批〔2026〕65号","d":"2026-07-17","dd":"2026-07-08","u":"霞浦县旅游投资发展有限公司","loc":"霞浦县北壁乡","m":1915.8585,"dur":"3个月","fund":"县财政拨款","code":"2604-350921-04-01-911110","t":"霞浦县发展和改革局关于霞浦东冲半岛外海道路工程-石人下段可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260717_2471075.htm","txt":"霞浦县旅游投资发展有限公司：\n 报来《关于要求审批霞浦东冲半岛外海道路工程-石人下段可行性研究报告的请示》（霞旅投〔2026〕25号）收悉。经研究，现批复如下：\n 一、本项目对于推动旅游发展、完善当地路网具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦东冲半岛外海道路工程-石人下段（项目编码：2604-350921-04-01-911110）。\n 三、项目建设地点：霞浦县北壁乡。\n 四、建设单位：霞浦县旅游投资发展有限公司。\n 五、项目建设规模及主要内容：本次设计“石人下段”起点位于北壁乡石人下村东北侧,起点与规划金蟹至石人下衔接，桩号为K53+519.164，路线沿现状道路往东南方向展线至K54+286.636，终点与石人下至池澳顺接。本段路线全长0.767km，路基宽度7.5m，道路等级为三级公路，双向两车道，设计速度30公里/小时，设置涵洞2道。\n 主要建设内容包括：路线、路基、路面、涵洞、路线交叉等附属设施。\n 六、项目投资估算及资金来源：估算总投资为1915.8585万元，资金来源为县财政拨款。\n 七、项目建设工期：3个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2025〕200号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据国家发展和改革委员会2018年16号令、闽发改法规〔2015〕404号、闽发改法规〔2022〕667号、宁发改规〔2023〕3号等文件执行，请严格按照要求依法依规开展项目招标工作。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。\n 十一、其他事项：原霞发改审批〔2025〕88号文即日起废止，以本文为准。"},{"i":19,"c":"可研批复","n":"霞浦县公立医院能力提升项目","no":"霞发改审批〔2026〕64号","d":"2026-07-01","dd":"2026-06-25","u":"霞浦县总医院","loc":"霞浦县医院、县中医院、各乡镇卫生院","m":9082.12,"dur":"24个月","fund":"申请中央预算内补助及财政统筹","code":"2604-350921-04-01-196448","t":"霞浦县发展和改革局关于霞浦县公立医院能力提升项目可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260701_2467446.htm","txt":"霞浦县总医院：\n 报来《关于请求审批霞浦县公立医院能力提升项目可行性研究报告的请示》（霞总院〔2026〕3号）收悉。经研究，现批复如下：\n 一、本项目对于推动公立医院高质量发展、加快推进县域医疗服务体系提质增效具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县公立医院能力提升项目（项目编码：2604-350921-04-01-196448）。\n 三、项目建设地点：霞浦县医院、县中医院、各乡镇卫生院。\n 四、建设单位：霞浦县总医院。\n 五、项目建设规模及主要内容：霞浦县公立医院能力提升项目围绕县域医共体建设，主要建设内容包括\n 1.常见病救治能力提升：强化专科建设、围绕各重点科室对诊断类、治疗类、辅助类设备开展硬件升级。\n 2.新建县域介入诊疗中心：在霞浦县医院院内西侧，新建一栋层高三层，占地面积约432平方米，总建筑面积1296平方米的框架结构县域介入中心用房。配套配置核心设备及辅助设备。\n 3.提升县域巡回医疗服务能力：配备3部巡回诊疗车及相关设备。\n 4.加强县级医院重点和薄弱专科建设：针对各重点专科，针对性配置专用诊疗设备。\n 六、项目投资估算及资金来源：估算总投资为9082.12万元，资金来源为申请中央预算内补助及财政统筹。\n 七、项目建设工期：24个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2026〕102号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请施工、重要设备采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。鉴于该项目勘察、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":20,"c":"可研批复","n":"霞浦县三沙镇区基础配套设施改造提升项目","no":"霞发改审批〔2026〕63号","d":"2026-07-01","dd":"2026-06-23","u":"霞浦县三沙镇人民政府","loc":"霞浦县三沙镇","m":589.93,"dur":"6个月","fund":"申请公益性基金及业主自筹","code":"2606-350921-04-01-872357","t":"霞浦县发展和改革局关于霞浦县三沙镇区基础配套设施改造提升项目建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260701_2467439.htm","txt":"霞浦县三沙镇人民政府：\n 报来《关于要求审批霞浦县三沙镇区基础配套设施改造提升项目建议书暨可行性研究报告的函》（霞三函〔2026〕26号）收悉。经研究，现批复如下：\n 一、本项目对于节省能源和推动地区经济发展具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县三沙镇区基础配套设施改造提升项目（项目编码：2606-350921-04-01-872357）。\n 三、项目建设地点：霞浦县三沙镇。\n 四、建设单位：霞浦县三沙镇人民政府。\n 五、项目建设规模及主要内容：\n （一）本项目拟对三沙镇各区部分道路白改黑，改造道路总面积12771平方米。\n （二）三沙镇各区道路全长44.75KM改造安装配套路灯共计3500套，功率为35W/盏（壁挂式），共敷设低压电缆55000M，高压电缆3700M，安装杆式配电箱28台。\n 六、项目投资估算及资金来源：项目总投资为589.93万元，资金来源为申请公益性基金及业主自筹。\n 七、项目建设工期：6个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请施工采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。鉴于该项目勘察、设计、监理单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":21,"c":"可研批复","n":"霞浦经济开发区渔洋里片区污水处理厂项目","no":"霞发改审批〔2026〕62号","d":"2026-07-01","dd":"2026-06-23","u":"福建省霞浦经济开发区投资建设有限公司","loc":"霞浦县渔洋里片区","m":6774.0,"dur":"","fund":"县财政配套及建设单位自筹","code":"2512-350921-04-01-319814","t":"霞浦县发展和改革局关于霞浦经济开发区渔洋里片区污水处理厂项目可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260701_2467437.htm","txt":"福建省霞浦经济开发区投资建设有限公司：\n 报来《关于要求审批霞浦经济开发区渔洋里片区污水处理厂项目可行性研究报告的请示》（霞开司文〔2026〕6号）收悉。经研究，现批复如下：\n 一、本项目对于园区工业发展、生态环境保护具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦经济开发区渔洋里片区污水处理厂项目（项目编码：2512-350921-04-01-319814）。\n 三、项目建设地点：霞浦县渔洋里片区。\n 四、建设单位：福建省霞浦经济开发区投资建设有限公司。\n 五、项目建设规模及主要内容：本项目主要建设一处污水处理站和配套建设输送管和污水提升泵工程。\n 污水处理站总用地面积1.0604公顷，总建筑面积930.33平方米，建筑占地面积503.56平方米，绿地面积5387.19平方米，配套设置12个机动车停车位。污水处理站总规模为5000m³/d，近期2000m³/d，远期增加3000m³/d。配套新建污水压力输送管约4公里，管径DN400。新建污水提升泵站1座，总规模5000m³/d，近期设备按2000m³/d配套。\n 六、项目投资估算及资金来源：估算总投资为6774万元，资金来源为县财政配套及建设单位自筹。\n 七、项目建设工期：2年。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2026〕40号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请施工（含重要材料、重要设备）、设计、监理采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。鉴于该项目勘察单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":22,"c":"可研批复","n":"溪南镇南岸村基础设施提升改造项目","no":"霞发改审批〔2026〕60号","d":"2026-07-01","dd":"2026-06-18","u":"霞浦县溪南镇人民政府","loc":"霞浦县溪南镇南岸村","m":156.82,"dur":"8个月","fund":"申请中央专项彩票公益金及业主自筹","code":"2606-350921-04-05-210387","t":"霞浦县发展和改革局关于溪南镇南岸村基础设施提升改造项目建议书暨可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260701_2467431.htm","txt":"霞浦县溪南镇人民政府：\n 报来《霞浦县溪南镇人民政府关于要求审批溪南镇南岸村基础设施提升改造项目建议书暨可行性研究报告的请示》（霞溪政〔2026〕30号）收悉。经研究，现批复如下：\n 一、本项目对于补齐基础设施短板、提升村庄综合治理水平具有重要意义，原则同意项目建设。\n 二、项目名称：溪南镇南岸村基础设施提升改造项目（项目编码：2606-350921-04-05-210387）。\n 三、项目建设地点：霞浦县溪南镇南岸村。\n 四、建设单位：霞浦县溪南镇人民政府。\n 五、项目建设规模及主要内容：\n 项目拟对霞浦县溪南镇南岸村基础设施进行提升改造，具体建设内容为:在南岸村道路长度约500米增加太阳能路灯约17盏；登山步道长度约842米增加庭院灯约65盏；对南岸村基础设施提升改造，增加休憩亭子、智能化健身设施、文化宣传景观小品、防护栏杆，并对夜景照明及绿化进行提升改造，增设数字监控等设备。\n 六、项目投资估算及资金来源：项目总投资为156.82万元，资金来源为申请中央专项彩票公益金及业主自筹。\n 七、项目建设工期：8个月。\n 八、项目社会稳定风险评估意见：\n 项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：\n 根据招标投标法律法规及国家和我省有关工程项目招投标规定，鉴于该项目勘察、设计、施工、监理等单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":23,"c":"可研批复","n":"霞浦县城乡公交基础设施全域提升工程","no":"霞发改审批〔2026〕59号","d":"2026-07-01","dd":"2026-06-15","u":"霞浦县交通运输事业发展中心","loc":"霞浦县","m":15804.49,"dur":"24个月","fund":"申请专项债资金及财政筹集配套","code":"2603-350921-04-01-958878","t":"霞浦县发展和改革局关于霞浦县城乡公交基础设施全域提升工程可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202607/t20260701_2467422.htm","txt":"霞浦县交通运输事业发展中心：\n 报来《霞浦县交通运输事业发展中心关于要求审批霞浦县城乡公交基础设施全域提升工程可行性研究报告的请示》（霞交运〔2026〕9号）收悉。经研究，现批复如下：\n 一、本项目对于完善交通基础设施网络、支撑全域旅游与产业发展具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦县城乡公交基础设施全域提升工程（项目编码：2603-350921-04-01-958878）。\n 三、项目建设地点：霞浦县。\n 四、建设单位：霞浦县交通运输事业发展中心。\n 五、项目建设规模及主要内容：本项目主要由两大子项目构成，分别为综合运输服务站提升工程与主干路霞楼路段改造提升工程。\n （一）综合运输服务站提升工程：\n 1.溪南镇综合运输服务站提升工程：\n 项目用地面积2538.58平方米，总建筑面积2030.86平方米，配套建设室外道路面积1280.84平方米，绿地面积380.79平方米，配套建设围墙栏杆、停车大棚、充电桩6个。\n 2.盐田乡综合运输服务站提升工程：\n 项目用地面积1030.1平方米，总建筑面积618.06平方米，配套室外道路面积429.57平方米，绿地面积154.52平方米，配套建设围墙栏杆、停车大棚、充电桩4个。\n 3.水门乡综合运输服务站提升工程：\n 项目用地面积2706.35平方米，总建筑面积1894.45平方米，配套室外道路面积1358.92平方米，绿地面积405.95平方米，配套建设围墙栏杆、停车大棚、充电桩4个。\n 4.牙城镇综合运输服务站提升工程：\n 项目用地面积4167.18平方米，总建筑面积4167.18平方米，配套室外道路面积1773.04平方米，绿地面积625.08平方米，配套建设围墙栏杆、停车大棚、充电桩5个。\n 5.三沙镇综合运输服务站提升工程：\n 项目用地面积1231.57平方米，总建筑面积615.79平方米，配套室外道路面积511.57平方米，绿地面积184.74平方米，配套建设围墙栏杆、停车大棚、充电桩6个。\n 6.霞浦县旅游专线综合运输服务站提升工程：\n 项目总用地面积3963.74平方米，总建筑面积4756.49平方米，配套设置客车停车位18个、普通汽车停车位8个、非机动车停车位23个，设置充电桩8个。\n （二）主干路霞楼路段改造提升工程：\n 本工程仅对配套主干路霞楼路段现有水泥路面进行修复及“白改黑”提升改造，不改变原有路线指标。该路段全长15.281公里，按三级公路标准建设，时速30km/h，沿线配套实施排水系统修复工程，同步恢复路面标线。\n 六、项目投资估算及资金来源：估算总投资为15804.49万元，资金来源为申请专项债资金及财政筹集配套。\n 七、项目建设工期：24个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2026〕83号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请施工（含重要材料、重要设备）、设计、监理采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。鉴于该项目勘察单项合同估算未达到必须招标的规模标准，依法可不进行招标，涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":24,"c":"设计批复","n":"霞浦县北壁乡2025年公益性基础设施建设项目","no":"霞发改审批〔2026〕58号","d":"2026-06-15","dd":"2026-06-12","u":"霞浦县北壁乡人民政府","loc":"霞浦县北壁乡","m":447.01,"dur":"","fund":"中央专项资金补助及业主自筹","code":"2411-350921-04-01-356022","t":"霞浦县发展和改革局关于霞浦县北壁乡2025年公益性基础设施建设项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202606/t20260615_2464208.htm","txt":"霞浦县北壁乡人民政府：\n 报来《霞浦县北壁乡人民政府关于要求审批霞浦县北壁乡2025年公益性基础设施建设项目初步设计及概算的请示》（霞北政〔2026〕7号）及相关材料收悉。经研究，原则同意霞浦县北壁乡2025年公益性基础设施建设项目（项目代码：2411-350921-04-01-356022）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县北壁乡2025年公益性基础设施建设项目。\n 二、项目建设地点：霞浦县北壁乡。\n 三、项目单位：霞浦县北壁乡人民政府。\n 四、项目建设规模及主要内容：本项目建设内容包含新建步道共2.806km，其中：\n （一）金龟山健身步道建设:新建金龟山健身步道总长1.128km，宽度1.0-2.0m,同时沿线修建边沟、护栏、休憩设施、标识系统、垃圾箱、公厕等设施。\n （二）仙顶山健身步道建设:新建健身步道长1.194km，宽度1.8m，同时沿线修建边沟、护栏、休憩设施、标识系统、垃圾箱、公厕等设施。\n （三）北壁村健身步道建设:新建健身步道长0.484km，宽度2.0m，同时沿线修建护栏、垃圾箱等设施。\n （四）配套提升改造北壁村休闲健身设施，其中包括:篮球场和羽毛球场铺装改造、场内步道改造95m、风雨廊、场内排水等配套设施，改造提升公厕一座，提升改造配套停车场一处、运动广场一处及口袋公园一处。\n 五、工程概算：项目概算总投资447.01万元，资金来源为中央专项资金补助及业主自筹。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":25,"c":"可研批复","n":"霞浦东冲半岛外海道路工程 （外浒1号桥段）","no":"霞发改审批〔2026〕57号","d":"2026-06-15","dd":"2026-06-03","u":"霞浦县旅游投资发展有限公司","loc":"霞浦县下浒镇","m":2142.6612,"dur":"18个月","fund":"财政拨款","code":"2512-350921-04-01-453779","t":"霞浦县发展和改革局关于霞浦东冲半岛外海道路工程 （外浒1号桥段）可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202606/t20260615_2464207.htm","txt":"霞浦县旅游投资发展有限公司：\n 报来《关于要求审批霞浦东冲半岛外海道路工程（外浒1号桥段）可行性研究报告的请示》（霞旅投〔2025〕75号）收悉。经研究，现批复如下：\n 一、本项目对于完善霞浦县东冲半岛风景名胜区的发展规划及推动旅游发展具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦东冲半岛外海道路工程 （外浒1号桥段）（项目编码：2512-350921-04-01-453779）。\n 三、项目建设地点：霞浦县下浒镇。\n 四、建设单位：霞浦县旅游投资发展有限公司。\n 五、项目建设规模及主要内容：\n 路线起点位于下浒镇外浒（桩号K45+338），顺接外海道路金蟹至外浒，路线沿山体边缘由东向西展线，于（桩号K45+569.6）新建外浒1号桥横跨外浒村街道，后继续由东向西至终点（桩号K45+900.045）顺接外浒至金蟹。\n 本标段路线全长0.562km，路基宽度7.5m，道路等级为三级公路，双向两车道，设计速度30km/h（降标路段设计速度20km/h）。设置涵洞1道，设置大桥1座111.58米。主要建设内容包括：路基、路面、桥梁、涵洞、路线交叉、安全防护等附属设施。\n 六、项目投资估算及资金来源：估算总投资为2142.6612万元，资金来源为财政拨款。\n 七、项目建设工期：18个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2026〕74号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据国家发改委2018年16号令、闽发改法规〔2015〕404号、闽发改法规〔2022〕667号、宁发改规〔2023〕3号等文件执行，请严格按照要求依法依规开展项目招标工作。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":26,"c":"可研批复","n":"霞浦东冲半岛外海道路工程 （北兜至视界园段）","no":"霞发改审批〔2026〕56号","d":"2026-06-15","dd":"2026-06-03","u":"霞浦县旅游投资发展有限公司","loc":"霞浦县松山街道、长春镇","m":12497.8421,"dur":"18个月","fund":"县财政拨款","code":"2510-350921-04-01-528226","t":"霞浦县发展和改革局关于霞浦东冲半岛外海道路工程 （北兜至视界园段）可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202606/t20260615_2464198.htm","txt":"霞浦县旅游投资发展有限公司：\n 报来《关于要求审批霞浦东冲半岛外海道路工程（北兜至视界园段）可行性研究报告的请示》（霞旅投〔2025〕63号）收悉。经研究，现批复如下：\n 一、本项目对于推动霞浦旅游发展、完善景区发展规划具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦东冲半岛外海道路工程 （北兜至视界园段）（项目编码：2510-350921-04-01-528226）。\n 三、项目建设地点：霞浦县松山街道、长春镇。\n 四、建设单位：霞浦县旅游投资发展有限公司。\n 五、项目建设规模及主要内容：\n 路线起点位于北兜村（桩号K14+139.469），顺接东冲半岛风景观光道积石至北兜段，村庄段路线沿着海岸线沿着北方向布线,过村庄后基本沿着现状道路布线。终点段采用分离式路基设计，左幅下穿S201线南岐隧道口的通道涵（净宽6m×5m净高），后沿老路改造T形平面交叉接上S201线，右幅于通道涵前设置辅道右行接上S201线，终点桩号K19+343.873。\n 本标段路线全长5.204km，路基宽度7.5m，道路等级为三级公路，双向两车道，设计速度30千米/小时。设置涵洞17道，设置中桥1座49.1米。\n 主要建设内容包括：路基、路面、桥梁、涵洞、路线交叉、安全防护等附属设施。\n 六、项目投资估算及资金来源：估算总投资为12497.8421万元，资金来源为县财政拨款。\n 七、项目建设工期：18个月。\n 八、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2025〕335号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：根据招标投标法律法规及国家和我省有关工程项目招投标规定，项目单位申请勘察、设计、施工（含重要材料、重要设备）、监理采用公开招标方式发包事项不再核准，请严格依法依规认真开展招投标工作。涉及政府采购事宜报同级财政部门。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":27,"c":"立项批复","n":"霞浦经济开发区渔洋里片区基础设施配套提升工程建议书","no":"霞发改审批〔2026〕54号","d":"2026-06-01","dd":"2026-05-27","u":"福建省霞浦经济开发区投资建设有限公司","loc":"霞浦县经济开发区","m":1137.68,"dur":"","fund":"霞浦县地方政府财政资金","code":"2605-350921-04-05-937900","t":"霞浦县发展和改革局关于霞浦经济开发区渔洋里片区基础设施配套提升工程建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202606/t20260601_2461061.htm","txt":"福建省霞浦经济开发区投资建设有限公司：\n 报来《关于要求审批霞浦经济开发区渔洋里片区基础设施配套提升工程项目建议书的请示》（霞开司文〔2026〕17号）及有关附件收悉。经研究，原则同意霞浦经济开发区渔洋里片区基础设施配套提升工程（项目编码：2605-350921-04-05-937900）开展前期工作。具体批复如下：\n 一、项目名称：霞浦经济开发区渔洋里片区基础设施配套提升工程。\n 二、项目建设地点：霞浦县经济开发区。\n 三、项目单位：福建省霞浦经济开发区投资建设有限公司。\n 四、项目建设规模及主要内容：项目主要建设内容包括横二路南侧、排洪渠南段及其支流两侧、横三路南侧、污水处理厂（规划）北侧及西侧绿化工程，防护绿地面积为18084㎡，以及巡检通道、护栏、绿化浇灌、排水设施等配套工程。\n 五、项目总投资匡算及资金来源：1137.68万元，资金来源为霞浦县地方政府财政资金（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":28,"c":"立项批复","n":"霞浦县综合高中建设","no":"霞发改审批〔2026〕53号","d":"2026-05-21","dd":"2026-05-18","u":"霞浦县教育局","loc":"霞浦县松港街道","m":79480.03,"dur":"","fund":"申请地方政府专项债、中央预算资金及财政配套资金","code":"2605-350921-04-01-171025","t":"霞浦县发展和改革局关于霞浦县综合高中建设项目建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459220.htm","txt":"霞浦县教育局：\n 报来《霞浦县教育局关于要求审批霞浦县综合高中建设项目建议书的函》（霞教函〔2026〕28号）及有关附件收悉。经研究，原则同意霞浦县综合高中建设项目（项目编码：2605-350921-04-01-171025）开展前期工作。具体批复如下：\n 一、项目名称：霞浦县综合高中建设项目。\n 二、项目建设地点：霞浦县松港街道。\n 三、项目单位：霞浦县教育局。\n 四、项目建设规模及主要内容：项目规划总用地面积115343.5㎡，总建筑面积137885㎡，其中计容建筑面积101185㎡，不计容建筑面积36700㎡。\n （1）江边校区：工程规划总用地面积77326.69㎡，总建筑面积93300.00㎡，其中计容建筑面积69600.00㎡，不计容建筑面积23700.00㎡，建筑占地面积23198㎡。\n （2）利埕校区：工程规划总用地面积38016.81㎡，总建筑面积44585.00㎡，其中计容建筑面积31585.00㎡，不计容建筑面积13000.00㎡，建筑占地面积10650.00㎡。\n 主要建设内容包括新建综合楼、教学楼、实训楼、学生宿舍楼、教师宿舍楼、图书馆、体育馆，报告厅、地下设备用房及停车场、室外运动场等。\n 五、项目总投资匡算及资金来源：79480.03万元，资金来源为申请地方政府专项债、中央预算资金及财政配套资金（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":29,"c":"设计批复","n":"霞浦县乡镇污水处理提升改造工程二期—（沙江镇）","no":"霞发改审批〔2026〕52号","d":"2026-05-21","dd":"2026-05-15","u":"霞浦县沙江镇人民政府","loc":"","m":1714.21,"dur":"","fund":"","code":"2412-350921-04-05-111202","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水处理提升改造工程二期—（沙江镇）初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459219.htm","txt":"霞浦县沙江镇人民政府：\n 报来《沙江镇人民政府关于霞浦县乡镇污水处理提升改造工程二期—（沙江镇）初步设计及概算申请调整的报告》（霞沙政〔2026〕18号）及相关材料收悉。霞浦县乡镇污水处理提升改造工程二期—（沙江镇）初步设计及概算已由我局霞发改审批〔2025〕66号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水处理提升改造工程二期—（沙江镇）（项目编码：2412-350921-04-05-111202）分期实施，其中一期工程内容如下：\n 一、一期工程为八堡村、坝头村、厚首村、围江村4个行政村。工程内容包括：\n 1.新建及改造污水管道21683m（其中新建主管长度9180m、新建接户管长度12503m）。\n 2.新建一体化污水处理站3座。\n 3.新建三格化粪池1座。\n 二、一期工程概算：概算投资1714.21万元，其中工程费用1450.8万元，工程建设其他费用173.7万元，基本预备费48.73万元，建设期利息40.98万元。\n 其他事项仍按原霞发改审批〔2025〕66号文批复执行。"},{"i":30,"c":"设计批复","n":"霞浦县乡镇污水处理提升改造工程二期（长春镇）","no":"霞发改审批〔2026〕51号","d":"2026-05-21","dd":"2026-05-15","u":"霞浦县长春镇人民政府","loc":"","m":1105.17,"dur":"","fund":"","code":"2412-350921-04-01-868094","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水处理提升改造工程二期（长春镇）初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459218.htm","txt":"霞浦县长春镇人民政府：\n 报来《霞浦县长春镇人民政府关于霞浦县乡镇污水处理提升改造工程二期（长春镇）项目初步设计及概算申请调整的请示》（霞长政〔2026〕42号）及相关材料收悉。霞浦县乡镇污水处理提升改造工程二期（长春镇）初步设计及概算已由我局霞发改审批〔2025〕60号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水处理提升改造工程二期（长春镇）（项目编码：2412-350921-04-01-868094）分期实施，其中一期工程内容如下：\n 一、一期工程为武岐村、文岐村、加竹村、渔家地村、蜘蛛网村、法华村工程内容包括:新建污水主管DN200-DN300，长度约8145米，接户支管De65~De160，长度约15750米，原址改建污水处理站2座，合计40立方米每天，大型三格化粪池3座，合计70立方米，小型化粪池50座，共132立方米。\n 二、一期工程概算：概算投资1105.17万元，其中工程费用894.85万元，工程建设其他费用126.58万元，基本预备费51.08万元,建设期利息32.66万元。\n 其他事项仍按原霞发改审批〔2025〕60号文批复执行。"},{"i":31,"c":"立项批复","n":"霞浦县第七小学学生宿舍楼及食堂建设","no":"霞发改审批〔2026〕50号","d":"2026-05-21","dd":"2026-05-15","u":"霞浦县第七小学","loc":"霞浦县第七小学校内","m":3886.23,"dur":"","fund":"县财政教育专项经费中统筹安排","code":"2605-350921-04-01-186910","t":"霞浦县发展和改革局关于霞浦县第七小学学生宿舍楼及食堂建设项目建议书的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459215.htm","txt":"霞浦县第七小学：\n 报来《关于要求审批霞浦县第七小学学生宿舍楼及食堂建设项目建议书的请示》（霞七小〔2026〕10号）及有关附件收悉。经研究，原则同意霞浦县第七小学学生宿舍楼及食堂建设项目（项目编码：2605-350921-04-01-186910）开展前期工作。具体批复如下：\n 一、项目名称：霞浦县第七小学学生宿舍楼及食堂建设项目。\n 二、项目建设地点：霞浦县第七小学校内。\n 三、项目单位：霞浦县第七小学。\n 四、项目建设规模及主要内容：霞浦县第七小学学生宿舍楼及食堂建设项目总建筑面积6721.24m²，其中计容建筑面积5692.80m²，不计容建筑面积1028.44m²。\n 项目建设内容主要包括单体建筑的土建工程、装修工程、给排水工程、电气工程、暖通工程、消防工程以及景观绿化等配套设施工程。\n 五、项目总投资匡算及资金来源：3886.23万元，资金来源为县财政教育专项经费中统筹安排（待项目可行性研究报告阶段进一步研究论证）。\n 请根据相关建设标准，按照科学、合理、实用原则，注重投资实效，抓紧组织编制项目可行性研究报告，明确建设规模和总投资估算，落实建设资金拼盘方案，并按基建程序批报。"},{"i":32,"c":"设计批复","n":"霞浦县乡镇污水处理提升改造工程（二期）-溪南镇","no":"霞发改审批〔2026〕49号","d":"2026-05-21","dd":"2026-05-13","u":"霞浦县溪南镇人民政府","loc":"","m":3728.96,"dur":"","fund":"","code":"2506-350921-04-05-780644","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水处理提升改造工程（二期）-溪南镇初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459214.htm","txt":"霞浦县溪南镇人民政府：\n 报来《霞浦县溪南镇人民政府关于霞浦县乡镇污水处理提升改造工程（二期）-溪南镇初步设计及概算申请调整的请示》（霞溪政〔2026〕25号）及相关材料收悉。霞浦县乡镇污水处理提升改造工程（二期）-溪南镇初步设计及概算已由我局霞发改审批〔2025〕64号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水处理提升改造工程（二期）-溪南镇（项目编码：2506-350921-04-05-780644）分期实施，其中一期工程内容如下：\n 一、一期工程为左湾村、芹头村、关厝埕自然村、青山村、柘下自然村、八尺自然村、七星村、沙湾自然村、大鼻头自然村、下砚村、甘棠村、牛胶岭自然村12个村庄（6个行政村，6个自然村）。工程内容包括：\n (1)建设重力主管：DN400管道782m，DN300管道2386m，DN200管道18446m，De160接户管道8691m，De100接户管道8691m，De65接户管道8691m；压力管道：De100PE管道255m，DN100涂塑钢管500m，DN50涂塑钢管1018m。\n (2)建设污水处理站4座。\n (3)建设污水提升泵站5座。\n (4)建设大型三格化粪池8座。\n 二、一期工程概算：概算投资3728.96万元，其中工程费用3170.24万元，工程建设其他费用450.11万元，基本预备费108.61万元。\n 其他事项仍按原霞发改审批〔2025〕64号文批复执行。"},{"i":33,"c":"可研批复","n":"霞浦下浒全民健身中心项目","no":"霞发改审批〔2026〕47号","d":"2026-05-21","dd":"2026-05-13","u":"霞浦县下浒镇人民政府","loc":"霞浦县下浒镇","m":3793.46,"dur":"24个月","fund":"申请专项债资金及县、乡镇财政统筹","code":"2508-350921-04-01-609315","t":"霞浦县发展和改革局关于霞浦下浒全民健身中心项目可行性研究报告的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459211.htm","txt":"霞浦县下浒镇人民政府：\n 报来《霞浦县下浒镇人民政府关于要求审批霞浦下浒全民健身中心项目可行性研究报告的请示》（霞浒政〔2026〕9号）收悉。经研究，现批复如下：\n 一、本项目对于提高全民健康水平、培养青少年运动兴趣和丰富群众文化生活具有重要意义，原则同意项目建设。\n 二、项目名称：霞浦下浒全民健身中心项目（项目编码：2508-350921-04-01-609315）。\n 三、项目建设地点：霞浦县下浒镇。\n 四、建设单位：霞浦县下浒镇人民政府。\n 五、项目建设规模及主要内容：\n 本项目总用地面积为6220平方米，建筑占地面积为1340.48平方米，总建筑面积为4653.85平方米,计容建筑面积4819.46平方米，非计容建筑面积972.32平方米。规划停车位60个，并配套建设充电桩12个。主要建设内容包括新建全民健身中心单体建筑，配套室外运动场地、道路、绿化、停车场、围墙、标识、市政接驳等工程。\n 六、项目投资估算及资金来源：\n 估算算总投资为3793.46万元，资金来源为申请专项债资金及县、乡镇财政统筹。\n 七、项目建设工期：24个月。\n 八、项目社会稳定风险评估意见：\n 项目已按有关规定开展社会稳定风险评估，并经当地政府审查项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 九、项目招标内容：\n 根据国家发改委2018年16号令、闽发改法规〔2015〕404号、闽发改法规〔2022〕667号、宁发改规〔2023〕3号等文件执行，请严格按照要求依法依规开展项目招标工作。\n 十、请据此批复抓紧开展初步设计，深化其他相关前期工作，\n 争取项目尽早开工建设。"},{"i":34,"c":"设计批复","n":"霞浦县乡镇污水提升改造工程二期（盐田畲族乡）","no":"霞发改审批〔2026〕46号","d":"2026-05-21","dd":"2026-05-12","u":"霞浦县盐田畲族乡人民政府","loc":"","m":345.5,"dur":"","fund":"","code":"2412-350921-04-05-193203","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水提升改造工程二期（盐田畲族乡）初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459210.htm","txt":"霞浦县盐田畲族乡人民政府：\n 报来《霞浦县盐田畲族乡人民政府关于霞浦县乡镇污水提升改造工程二期（盐田畲族乡）治理项目初步设计及概算申请调整的请示》（霞盐政〔2026〕23号）及相关材料收悉。霞浦县乡镇污水提升改造工程二期（盐田畲族乡）初步设计及概算已由我局霞发改审批〔2025〕69号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水提升改造工程二期（盐田畲族乡）（项目编码：2412-350921-04-05-193203）分期实施，其中一期工程内容如下：\n 一、一期工程为村里村、杨梅岭村、二铺村、王高店村、里马村、瓦窑头村6个行政村。工程内容包括:\n 1.新建污水管道7296m(其中主管长度2989m，新建接户管长度4307m)。\n 2.新建人工湿地1座，修复现状人工湿地1座。\n 3.新建终端化粪池10座。\n 二、一期工程概算：概算投资345.50万元，其中工程费用290.00万元，工程建设其他费用45.44万元，基本预备费10.06万元。\n 其他事项仍按原霞发改审批〔2025〕69号文批复执行。"},{"i":35,"c":"设计批复","n":"霞浦县乡镇污水处理提升改造工程二期-(北壁乡)","no":"霞发改审批〔2026〕45号","d":"2026-05-21","dd":"2026-05-12","u":"霞浦县北壁乡人民政府","loc":"","m":2430.38,"dur":"","fund":"","code":"2412-350921-04-01-943727","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水处理提升改造工程二期-(北壁乡)初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459209.htm","txt":"霞浦县北壁乡人民政府：\n 报来《北壁乡人民政府关于霞浦县乡镇污水处理提升改造工程二期-(北壁乡)初步设计及概算申请调整的请示》（霞北政〔2026〕13号）及相关材料收悉。霞浦县乡镇污水处理提升改造工程二期-(北壁乡)初步设计及概算已由我局霞发改审批〔2025〕75号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水处理提升改造工程二期-(北壁乡)（项目编码：2412-350921-04-01-943727）分期实施，其中一期工程内容如下：\n 一、一期工程为四门桥村、东冲村、盘前村、下岐村、上岐村、池澳村6个行政村。工程内容包括:\n 1.新建及改造污水管道23624m（其中新建主管长度7880m、新建接户管长度15744m）。\n 2.新建一体化污水处理站6座。\n 3.新建一体化泵站2座。\n 4.新建大型三格化粪池1座。\n 二、一期工程概算：概算投资2430.38万元，其中工程费用2030.8万元，工程建设其他费用287.07万元，基本预备费69.54万元，建设期利息42.97万元。\n 其他事项仍按原霞发改审批〔2025〕75号文批复执行。"},{"i":36,"c":"设计批复","n":"霞浦县黄瓜山路（松山大道-六一七路）道路工程","no":"霞发改审批〔2026〕44号","d":"2026-05-21","dd":"2026-05-21","u":"霞浦县城市建设投资有限公司","loc":"霞浦县松港组团","m":2551.24,"dur":"","fund":"财政拨款","code":"2509-350921-04-01-454817","t":"霞浦县发展和改革局关于霞浦县黄瓜山路（松山大道-六一七路）道路工程初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459208.htm","txt":"霞浦县城市建设投资有限公司：\n 报来《关于要求审批霞浦县黄瓜山路（松山大道-六一七路）道路工程初步设计及概算的请示》（霞城投〔2026〕14号）及相关材料收悉。经研究，原则同意霞浦县黄瓜山路（松山大道-六一七路）道路工程（项目代码：2509-350921-04-01-454817）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县黄瓜山路（松山大道-六一七路）道路工程。\n 二、项目建设地点：霞浦县松港组团。\n 三、项目单位：霞浦县城市建设投资有限公司。\n 四、项目建设规模及主要内容：本项目位于宁德市霞浦县松港组团，黄瓜山路起点位于现状松山大道交叉口，路线由西北向东南延伸，路线终点与规划六一七路平交（现状为X973县道），本次新建长度为241.312m(AK0+053.688~AK0+295)，道路红线宽度40m,道路等级为城市主干路，设计速度40km/h,采用双向六车道，沥青混凝土路面。\n 五、工程概算：项目概算总投资2551.24万元，资金来源为财政拨款。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":37,"c":"设计批复","n":"霞浦县乡镇污水处理提升改造工程(二期)-下浒镇上澳村等9个村农村污水治理项目","no":"霞发改审批〔2026〕43号","d":"2026-05-21","dd":"2026-05-11","u":"霞浦县下浒镇人民政府","loc":"","m":1793.37,"dur":"","fund":"","code":"2412-350921-04-01-371948","t":"霞浦县发展和改革局关于调整霞浦县乡镇污水处理提升改造工程(二期)-下浒镇上澳村等9个村农村污水治理项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202605/t20260521_2459207.htm","txt":"霞浦县下浒镇人民政府：\n 报来《霞浦县下浒镇人民政府关于霞浦县乡镇污水处理提升改造工程（二期）-下浒镇上澳村等9个村农村污水治理项目初步设计及概算申请调整的请示》（霞浒政〔2026〕29号）及相关材料收悉。霞浦县乡镇污水处理提升改造工程（二期）-下浒镇上澳村等9个村农村污水治理项目初步设计及概算已由我局霞发改审批〔2025〕100号文批复。鉴于项目受征地困难等因素影响，在工程建设规模及主要内容、概算投资不变的情况下，将工程分两期实施。经研究，原则同意霞浦县乡镇污水处理提升改造工程（二期）-下浒镇上澳村等9个村农村污水治理项目（项目编码：2412-350921-04-01-371948）分期实施，其中一期工程内容如下：\n 一、一期工程为赤壁村、延亭村、磺砂村、上澳村、四斗村5个村子。工程内容包括:\n 1.新建及改造污水管道17468m(其中新建主管长度5413m、新建接户管长度12055m)。\n 2.新建人工湿地3座，一体化污水处理站1座。\n 3.新建一体式预制泵站1座。\n 4.新建三格化粪池4座。\n 二、一期工程概算：概算投资1793.37万元，其中工程费用1530.52万元，工程建设其他费用189.025万元，基本预备费51.59万元,建设期利息22.24万元。\n 其他事项仍按原霞发改审批〔2025〕100号文批复执行。"},{"i":38,"c":"可研批复","n":"福建省霞浦县海洋牧场深水抗风浪网箱养殖项目","no":"霞发改审批〔2026〕39号","d":"2026-04-30","dd":"2026-04-20","u":"福建省霞浦县光大渔港开发有限公司","loc":"霞浦县长春镇加竹村长草屿附近海域","m":24014.0,"dur":"","fund":"申请专项债资金及财政资金","code":"2507-350921-04-01-207580","t":"霞浦县发展和改革局关于福建省霞浦县海洋牧场深水抗风浪网箱养殖项目可行性研究报告调整的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202604/t20260430_2455988.htm","txt":"福建省霞浦县光大渔港开发有限公司：\n 报来《福建省霞浦县光大渔港开发有限公司关于申请调整福建省霞浦县海洋牧场深水抗风浪网箱养殖项目可行性研究报告内容的函》（霞光大〔2026〕3号）及相关附件收悉。福建省霞浦县海洋牧场深水抗风浪网箱养殖项目可行性研究报告已由我局以霞发改审批〔2025〕91号文批复。鉴于项目建设需求配套智能化检测平台，需对可研报告中相关内容予以细化完善，在保持项目建设内容、总投资不变的基础上，经研究，现对该项目可行性研究报告调整批复如下：\n 一、项目名称：福建省霞浦县海洋牧场深水抗风浪网箱养殖项目（项目编码：2507-350921-04-01-207580）。\n 二、项目建设地点：霞浦县长春镇加竹村长草屿附近海域。\n 三、项目建设规模及主要内容：本项目主要建设内容为建设300口周长90米的HDPE深水抗风浪网箱，采用4口并排锚固方式固定于海上；项目配备“6+1m”规格的超高分子量聚乙烯无结网衣及PE经编无结网衣各300套；同步配套27个60平方米的养殖平台及相关工具；配备智能化检测平台，并配置两艘摆渡船舶。\n 四、项目投资估算及资金来源：估算总投资为24014.00万元，资金来源为申请专项债资金及财政资金。\n 五、项目建设期限：12个月。\n 六、项目社会稳定风险评估意见：项目已按有关规定开展社会稳定风险评估，并经霞浦县人民政府审查批复（霞政文〔2025〕215号）项目总体风险等级为低风险。请严格落实项目风险防范和化解措施，切实维护广大人民群众的切身利益和社会稳定。\n 七、项目招标内容：根据国家发改委2018年16号令、闽发改法规〔2015〕404号、闽发改法规〔2022〕667号、宁发改规〔2023〕3号等文件执行，请严格按照要求依法依规开展项目招标工作。\n 八、请据此批复抓紧开展初步设计，深化其他相关前期工作，争取项目尽早开工建设。\n 九、其他事项：原霞发改审批〔2025〕91号文与本文不一致内容，以本文为准。"},{"i":39,"c":"设计批复","n":"霞浦县松城街道西南片区老旧小区改造（四期）","no":"霞发改审批〔2026〕40号","d":"2026-04-30","dd":"2026-04-20","u":"霞浦县人民政府松城街道办事处","loc":"霞浦县松城街道","m":5843.66,"dur":"","fund":"申请专项债资金","code":"2403-350921-04-01-226748","t":"霞浦县发展和改革局关于霞浦县松城街道西南片区老旧小区改造（四期）初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202604/t20260430_2455983.htm","txt":"霞浦县人民政府松城街道办事处：\n 报来《霞浦县人民政府松城街道办事处关于要求审批霞浦县松城街道西南片区老旧小区改造（四期）初步设计及概算的请示》（霞城办〔2025〕43号）及相关材料收悉。经研究，原则同意霞浦县松城街道西南片区老旧小区改造（四期）（项目代码：2403-350921-04-01-226748）初步设计及概算，具体批复如下：\n 一、项目名称：霞浦县松城街道西南片区老旧小区改造（四期）。\n 二、项目建设地点：霞浦县松城街道。\n 三、项目单位：霞浦县人民政府松城街道办事处。\n 四、项目建设规模及主要内容：\n 霞浦县松城街道西南片区老旧小区改造四期工程改造老旧小区共计45个，涉及俊贤、俊星、中乘、西关、龙津、彩虹六个社区，主要建设内容包含小区周边路网和管网改造雨污分流，其中背街小巷“白改黑”面积约34789.7㎡，新建污水管及接户管12434m，新建或重建排水沟雨水管共846m；围墙改造、增设宣传栏、照明设施、电线规整及其他相关附属配套设施等。\n 五、工程概算：项目概算总投资5843.66万元，资金来源为申请专项债资金。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"},{"i":40,"c":"设计批复","n":"福建省霞浦县海洋牧场深水抗风浪网箱养殖项目","no":"霞发改审批〔2026〕41号","d":"2026-04-30","dd":"2026-04-20","u":"福建省霞浦县光大渔港开发有限公司","loc":"霞浦县长春镇加竹村长草屿附近海域","m":23938.04,"dur":"","fund":"申请专项债资金及财政资金","code":"2507-350921-04-01-207580","t":"霞浦县发展和改革局关于福建省霞浦县海洋牧场深水抗风浪网箱养殖项目初步设计及概算的批复","url":"http://www.xiapu.gov.cn/zwgk/gkzl/bmzfxxgk/zfbm/xfzhggj/gkml/zdgkxx/202604/t20260430_2455979.htm","txt":"福建省霞浦县光大渔港开发有限公司：\n 报来《关于要求审批福建省霞浦县海洋牧场深水抗风浪网箱养殖项目初步设计及概算的请示》（霞光大〔2026〕1号）及相关材料收悉。经研究，原则同意福建省霞浦县海洋牧场深水抗风浪网箱养殖项目（项目代码：2507-350921-04-01-207580）初步设计及概算，具体批复如下：\n 一、项目名称：福建省霞浦县海洋牧场深水抗风浪网箱养殖项目。\n 二、项目建设地点：霞浦县长春镇加竹村长草屿附近海域。\n 三、项目单位：福建省霞浦县光大渔港开发有限公司。\n 四、项目建设规模及主要内容：本项目主要建设内容为建设300口周长90米的HDPE深水抗风浪网箱，采用4口并排锚固方式固定于海上；项目配备“6+1m”规格的超高分子量聚乙烯无结网衣及PE经编无结网衣各300套；同步配套27个60平方米的养殖平台及相关工具，并配置智慧化系统以及2艘作业船舶。\n 五、工程概算：项目概算总投资23938.04万元，资金来源为申请专项债资金及财政资金。\n 请项目单位根据审查意见要求，进一步完善设计方案；按照基本建设程序和项目法人责任制、招标投标制、工程监理制、合同管理制等要求，加强管理，落实环境保护措施和安全生产措施，确保工程质量安全，按期完成建设任务。"}],"from":"2026-04-19","to":"2026-10-19"};
+const ITEMS = DB.items;
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function money(v){ return v>0 ? (v>=10000 ? (v/10000).toFixed(2).replace(/\.?0+$/,'')+' 亿' : (v%1 ? v.toFixed(2) : v.toFixed(0))+' 万') : '—'; }
+
+/* ===== 聚合 ===== */
+const num = v => +v || 0;
+const byMonth = {}, byCat = {};
+ITEMS.forEach(it => {
+  const m = it.d.slice(0,7);
+  byMonth[m] = byMonth[m] || {n:0, amt:0}; byMonth[m].n++; byMonth[m].amt += it.m;
+  byCat[it.c] = byCat[it.c] || {n:0, amt:0}; byCat[it.c].n++; byCat[it.c].amt += it.m;
+});
+const months = Object.keys(byMonth).sort();
+const totalAmt = ITEMS.reduce((s,it)=>s+it.m,0);
+const invItems = ITEMS.filter(it=>it.m>0);
+
+/* ===== 指标卡 ===== */
+$('statGrid').innerHTML = [
+  ['<div class="num">'+ITEMS.length+'</div><div class="label">近半年新批批复</div>'],
+  ['<div class="num dark">'+(byCat['可研批复']||{n:0}).n+'</div><div class="label">可研批复</div>'],
+  ['<div class="num">'+(byCat['设计批复']||{n:0}).n+'</div><div class="label">设计批复</div>'],
+  ['<div class="num dark">'+(byCat['立项批复']||{n:0}).n+'</div><div class="label">立项批复（建议书）</div>'],
+  ['<div class="num warn">'+(totalAmt/10000).toFixed(2)+'<small> 亿元</small></div><div class="label">批复总投资（'+invItems.length+'/'+ITEMS.length+' 条含投资额）</div>'],
+].map(h=>'<div class="stat">'+h[0]+'</div>').join('');
+$('navTotal').textContent = '近半年 '+ITEMS.length+' 条新批批复 · 总投资约 '+(totalAmt/10000).toFixed(1)+' 亿元 · 数据截至 '+DB.to;
+$('titleSub').textContent = '统计周期：'+DB.from+' 至 '+DB.to+' · 霞浦县发展和改革局「政策文件」栏目';
+$('sec1Note').textContent = '已剔除变更 / 撤销 / 法人变更类批复（备查见 Excel「变更撤销类备查」表），本页仅统计新批项目，投资额取自批复正文"总投资/投资估算"。';
+const maxM = months.length ? Math.max(...months.map(m=>byMonth[m].n)) : 1;
+const maxCnt = Math.max(1, ...Object.values(byCat).map(c=>c.n), ...Object.values(byCat).map(c=>Math.round(c.amt/10000)));
+
+/* ===== 月度柱状图 ===== */
+const BAR_H = 75; // 最高柱像素
+$('chartRow').innerHTML = months.map(m =>
+  '<div class="bar-cell" data-month="'+m+'" role="button" tabindex="0" title="'+m+'：'+byMonth[m].n+' 条 · 投资 '+(byMonth[m].amt/10000).toFixed(2)+' 亿">'
+  + '<span class="bar-val">'+byMonth[m].n+'</span>'
+  + '<div class="bar" style="height:'+Math.max(4, Math.round(byMonth[m].n/maxM*BAR_H))+'px;"></div></div>').join('');
+$('chartLabels').innerHTML = months.map(m =>
+  '<span data-month="'+m+'">'+parseInt(m.slice(5),10)+'月</span>').join('');
+
+/* ===== 类型横条（数量+投资额双视图：条宽按投资额，标签显示数量） ===== */
+const catColors = {'可研批复':'linear-gradient(90deg,#2563eb,#c9d6f3)','设计批复':'linear-gradient(90deg,#3b82f6,#e8f0fe)','立项批复':'linear-gradient(90deg,#14b8a6,#d1fae5)'};
+$('hbarRow').innerHTML = Object.keys(byCat).map(c =>
+  '<div class="hbar-item" data-type="'+c+'" role="button" tabindex="0" title="点击筛选'+c+'">'
+  + '<div class="hbar-label">'+c+' <b>'+byCat[c].n+'</b></div>'
+  + '<div class="hbar-track"><div class="hbar-fill" style="width:'+Math.max(6, Math.round(byCat[c].n/maxCnt*100))+'%;background:'+(catColors[c]||'#3b82f6')+';"></div></div>'
+  + '<div class="money" style="width:72px;text-align:right;font-size:12px;color:#5b6b80;">'+(byCat[c].amt>0 ? (byCat[c].amt/10000).toFixed(2)+'亿' : '—')+'</div></div>').join('');
+
+/* ===== 状态与渲染 ===== */
+let state = { month:'', cat:'', q:'', sort:'d', desc:true, page:1 };
+const PER = 10;
+let filtered = [];
+
+ITEMS.forEach(it => { it._s = (it.n+' '+it.u+' '+it.no+' '+it.t+' '+it.txt).toLowerCase(); });
+
+function apply(){
+  const kw = state.q.trim().toLowerCase();
+  filtered = ITEMS.filter(it => {
+    if (state.month && it.d.slice(0,7) !== state.month) return false;
+    if (state.cat && it.c !== state.cat) return false;
+    if (kw && !kw.split(/\s+/).every(w => it._s.includes(w))) return false;
+    return true;
+  });
+  const k = state.sort, dir = state.desc ? -1 : 1;
+  filtered.sort((a,b) => {
+    if (k === 'm') return (a.m - b.m) * dir;
+    const av = a[k]||'', bv = b[k]||'';
+    return av < bv ? -dir : av > bv ? dir : 0;
+  });
+}
+
+function render(){
+  apply();
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / PER));
+  if (state.page > pages) state.page = pages;
+  const s = (state.page-1)*PER;
+  const view = filtered.slice(s, s+PER);
+
+  if (!total) {
+    $('tbody').innerHTML = '<tr><td colspan="6"><div class="empty">没有符合条件的批复，试试放宽筛选条件</div></td></tr>';
+  } else {
+    $('tbody').innerHTML = view.map(it => {
+      const cls = it.c==='可研批复'?'tag-ks':it.c==='设计批复'?'tag-sj':'tag-lx';
+      return '<tr data-id="'+it.i+'">'
+        + '<td class="date">'+it.d+'</td>'
+        + '<td><span class="tag '+cls+'">'+it.c+'</span></td>'
+        + '<td class="nm"><div class="t">'+esc(it.n)+'</div><div class="x">'+esc(it.u||'单位待公开')+'</div></td>'
+        + '<td class="money'+(it.m>=10000?' big':'')+'">'+money(it.m)+'</td>'
+        + '<td class="docno">'+esc(it.no||'—')+'</td>'
+        + '<td class="date">'+(it.dd||'—')+'</td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  const btns = [];
+  let st = Math.max(1, state.page-2), en = Math.min(pages, st+4); st = Math.max(1, en-4);
+  for (let p=st; p<=en; p++) btns.push('<button type="button" class="pager-btn'+(p===state.page?' active':'')+'" data-p="'+p+'">'+p+'</button>');
+  $('pfNums').innerHTML = btns.join('');
+  $('pfPrev').disabled = state.page === 1;
+  $('pfNext').disabled = state.page === pages;
+  $('pfInfo').textContent = '第 '+(s+1)+'–'+Math.min(s+PER,total)+' 条 · 共 '+total+' 条 · 第 '+state.page+'/'+pages+' 页';
+
+  document.querySelectorAll('.bar-cell, .chart-labels span[data-month]').forEach(el =>
+    el.classList.toggle('active', !!state.month && el.getAttribute('data-month') === state.month));
+  document.querySelectorAll('.hbar-item').forEach(el =>
+    el.classList.toggle('active', !!state.cat && el.getAttribute('data-type') === state.cat));
+  document.querySelectorAll('thead th[data-sort]').forEach(th => {
+    th.classList.toggle('sorted', th.dataset.sort === state.sort);
+    const ar = th.querySelector('.ar');
+    if (ar) ar.textContent = th.dataset.sort === state.sort ? (state.desc ? '▼' : '▲') : '▼';
+  });
+}
+
+/* ===== 筛选交互 ===== */
+let lastCall = null;
+function setFilter(k, v){
+  const now = Date.now();
+  if (lastCall && lastCall.k===k && lastCall.v===v && now-lastCall.t < 600) { lastCall.t = now; return; }
+  lastCall = { k, v, t: now };
+  const cur = k==='m' ? state.month : state.cat;
+  if (k==='m') state.month = (cur===v) ? '' : v;
+  else state.cat = (cur===v) ? '' : v;
+  syncFilterTag();
+  state.page = 1;
+  render();
+  $('sec4').scrollIntoView({behavior:'smooth'});
+}
+function syncFilterTag(){
+  const t = state.month ? state.month.slice(0,4)+'年'+parseInt(state.month.slice(5),10)+'月' : state.cat;
+  $('filterText').textContent = t || '';
+  $('filterTag').classList.toggle('visible', !!(state.month || state.cat));
+}
+document.querySelectorAll('.bar-cell, .chart-labels span[data-month]').forEach(el =>
+  el.addEventListener('click', () => setFilter('m', el.getAttribute('data-month'))));
+document.querySelectorAll('.hbar-item').forEach(el =>
+  el.addEventListener('click', () => setFilter('t', el.getAttribute('data-type'))));
+$('filterX').addEventListener('click', () => { state.month=''; state.cat=''; syncFilterTag(); state.page=1; render(); });
+
+let timer;
+$('q').addEventListener('input', e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => { state.q = e.target.value; state.page = 1; render(); }, 180);
+});
+document.querySelectorAll('thead th[data-sort]').forEach(th =>
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (state.sort === k) state.desc = !state.desc;
+    else { state.sort = k; state.desc = true; }
+    render();
+  }));
+$('pfPrev').addEventListener('click', () => { state.page--; render(); });
+$('pfNext').addEventListener('click', () => { state.page++; render(); });
+$('pfNums').addEventListener('click', e => {
+  const b = e.target.closest('button[data-p]'); if (!b) return;
+  state.page = +b.dataset.p; render();
+});
+
+/* ===== 详情抽屉 ===== */
+const drawer = $('drawer'), mask = $('mask');
+function openDetail(id){
+  const it = ITEMS.find(x => x.i === +id); if (!it) return;
+  const cls = it.c==='可研批复'?'tag-ks':it.c==='设计批复'?'tag-sj':'tag-lx';
+  $('drTags').innerHTML = '<span class="tag '+cls+'">'+it.c+'</span><span style="font-size:12.5px;color:#5b6b80">'+it.d+' 发布</span>';
+  $('drTitle').textContent = it.n || it.t;
+  $('drKv').innerHTML = [
+    ['批复文号', esc(it.no || '—')],
+    ['建设单位', esc(it.u || '—')],
+    ['建设地点', esc(it.loc || '—')],
+    ['总投资', it.m ? '<b>'+money(it.m)+'元</b>' : '—'],
+    ['建设工期', esc(it.dur || '—')],
+    ['资金来源', esc(it.fund || '—')],
+    ['项目代码', esc(it.code || '—')],
+    ['成文日期', esc(it.dd || '—')],
+    ['原文标题', esc(it.t || '—')],
+  ].map(([k,v]) => '<div class="k">'+k+'</div><div class="v">'+v+'</div>').join('');
+  $('drTxt').textContent = it.txt ? it.txt + (it.txt.length >= 4000 ? '\n\n……（正文已截断，完整内容请查看原文）' : '') : '（无正文）';
+  $('drLink').href = it.url || '#';
+  drawer.classList.add('on'); mask.classList.add('on');
+  $('drBody').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail(){
+  drawer.classList.remove('on'); mask.classList.remove('on');
+  document.body.style.overflow = '';
+}
+$('tbody').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-id]'); if (tr) openDetail(tr.dataset.id);
+});
+$('drClose').addEventListener('click', closeDetail);
+mask.addEventListener('click', closeDetail);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+/* ===== 洞察 ===== */
+let peak = months.length ? months.reduce((a,b)=>byMonth[a].n>=byMonth[b].n?a:b) : '';
+const topInv = ITEMS.slice().sort((a,b)=>b.m-a.m)[0];
+$('insightText').innerHTML = '近半年新批批复 '+ITEMS.length+' 条、批复总投资约 <b>'+(totalAmt/10000).toFixed(2)+' 亿元</b>；'
+  + (peak ? parseInt(peak.slice(5),10)+' 月为批复高峰（'+byMonth[peak].n+' 条）。' : '')
+  + (topInv && topInv.m>0 ? '单体投资最大项目为「'+esc(topInv.n)+'」（'+money(topInv.m)+'元）。按惯例批复后 1-3 个月内将陆续启动勘察、设计、监理及施工招标，建议重点关注「设计批复」下发项目的后续招标公告。' : '');
+
+$('genTime').textContent = DB.to;
+render();
+</script>
+
+</body>
+</html>
