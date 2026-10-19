@@ -1,0 +1,6 @@
+# 密钥与本地私有配置不上传
+push_config.json
+*.log
+__pycache__/
+.temp/
+temp/
