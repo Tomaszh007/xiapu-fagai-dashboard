@@ -1,8 +1,11 @@
 name: daily
 on:
+  push:
+    branches: [main]
+    paths: ['raw_docs.json']     # 云函数每日提交数据时自动触发
   schedule:
-    - cron: '0 0 * * *'   # 00:00 UTC = 北京时间 08:00
-  workflow_dispatch: {}    # 支持手动触发测试
+    - cron: '5 0 * * *'          # 08:05 北京时间兜底：云函数未投喂数据则用旧数据出报并告警
+  workflow_dispatch: {}
 
 permissions:
   contents: write
@@ -15,6 +18,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
 
       - uses: actions/setup-python@v5
         with:
@@ -23,23 +28,24 @@ jobs:
       - name: 安装中文字体与依赖
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
-          pip install -q requests openpyxl pillow
+          pip install -q -r requirements.txt
 
-      - name: 爬取数据 → 生成看板与日报图
+      - name: 解析数据 → 生成看板与日报图
         run: |
-          python crawl_xiapu.py
+          if [ ! -f raw_docs.json ]; then echo "raw_docs.json 缺失"; exit 1; fi
+          python parse_raw.py
           python build_dashboard.py
           python gen_daily_image.py
           mkdir -p public
           cp 霞浦发改批复看板.html public/index.html
           cp daily_report.png public/daily_report.png
 
-      - name: 提交数据更新
+      - name: 提交产出文件
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "auto: 数据更新 $(TZ=Asia/Shanghai date +'%F %H:%M')" || echo "no changes"
+          git commit -m "auto: 产出更新 $(TZ=Asia/Shanghai date +'%F %H:%M')" || echo "no changes"
           git push
 
       - name: 发布到 GitHub Pages
@@ -50,7 +56,19 @@ jobs:
           force_orphan: true
 
       - name: 推送日报到微信
+        continue-on-error: true
         env:
           SCKEY: ${{ secrets.SCKEY }}
           BOARD_URL: ${{ secrets.BOARD_URL }}
-        run: python notify_serverchan.py
+          EVENT: ${{ github.event_name }}
+        run: |
+          RAW_CT=$(git log -1 --format=%ct -- raw_docs.json)
+          RAW_CT=${RAW_CT:-0}
+          NOW=$(date +%s)
+          AGE=$((NOW - RAW_CT))
+          echo "数据年龄: ${AGE}s（触发方式: ${EVENT}）"
+          if [ "$EVENT" = "push" ] || [ "$EVENT" = "workflow_dispatch" ] || [ $AGE -gt 10800 ]; then
+            python notify_serverchan.py
+          else
+            echo "跳过推送（schedule 时新数据已由 push 触发过）"
+          fi
