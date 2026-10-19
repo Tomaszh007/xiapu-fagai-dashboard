@@ -1,0 +1,24 @@
+name: diag
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 探测霞浦政府网站各接口可达性
+        run: |
+          probe() {
+            echo "===== $1 ====="
+            code=$(curl -s -o /tmp/p -w "%{http_code}" -m 25 $3 "$2" $4 $5 $6 2>/dev/null || echo FAIL)
+            echo "HTTP $code"
+            head -c 180 /tmp/p 2>/dev/null | tr -d '\0' | head -2
+            echo
+            rm -f /tmp/p
+          }
+          probe "1 https 根路径" "https://www.xiapu.gov.cn/"
+          probe "2 http 根路径" "http://www.xiapu.gov.cn/"
+          probe "3 https POST fjdzapp" "https://www.xiapu.gov.cn/fjdzapp/search" -X POST -H "Content-Type: application/x-www-form-urlencoded" --data "channelid=201588&classsql=chnlid%3D25042&page=1&prepage=2"
+          probe "4 http POST fjdzapp" "http://www.xiapu.gov.cn/fjdzapp/search" -X POST -H "Content-Type: application/x-www-form-urlencoded" --data "channelid=201588&classsql=chnlid%3D25042&page=1&prepage=2"
+          probe "5 http GET was5" "http://www.xiapu.gov.cn/was5/web/search?channelid=239509&classsql=chnlid%3D25042%2Apublishyear%3D%28%272026%27%29&datatype=json&link=false&classsort=1&page=1&pagesize=5"
+          probe "6 https GET was5" "https://www.xiapu.gov.cn/was5/web/search?channelid=239509&classsql=chnlid%3D25042%2Apublishyear%3D%28%272026%27%29&datatype=json&link=false&classsort=1&page=1&pagesize=5"
+          probe "7 完整浏览器头 https POST" "https://www.xiapu.gov.cn/fjdzapp/search" -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -H "Referer: https://www.xiapu.gov.cn/" -H "Origin: https://www.xiapu.gov.cn" -H "Accept: application/json, text/plain, */*" -H "Accept-Language: zh-CN,zh;q=0.9" --data "channelid=201588&classsql=chnlid%3D25042&page=1&prepage=2"
