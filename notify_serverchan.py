@@ -57,6 +57,7 @@ def main():
     week_new = [i for i in items if d(i) and week_start <= d(i) <= today]
     month_new = [i for i in items if d(i) and month_start <= d(i) <= today]
     total_amt = sum(amt(i) for i in items)
+    last_date = max((i[:10] for i in (it.get('publish_date') or '' for it in items)), default='—')
 
     title = (f'霞浦发改批复日报 {today.month}/{today.day}：'
              f'今+{len(day_new)} 本周+{len(week_new)} 本月+{len(month_new)}')
@@ -66,6 +67,7 @@ def main():
         '',
         f'**本日新增 {len(day_new)} 条 · 本周新增 {len(week_new)} 条 · 本月新增 {len(month_new)} 条**',
         f'近半年累计新批 **{len(items)}** 条，批复总投资 **{money_str(total_amt)}元**',
+        f'<font color="comment">最新批复发布日期：{last_date}（统计口径：网站发布日期）</font>',
         '',
     ]
     # 新增明细（本日→本周→本月，最多 8 条）
