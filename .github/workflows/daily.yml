@@ -1,0 +1,56 @@
+name: daily
+on:
+  schedule:
+    - cron: '0 0 * * *'   # 00:00 UTC = 北京时间 08:00
+  workflow_dispatch: {}    # 支持手动触发测试
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装中文字体与依赖
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+          pip install -q requests openpyxl pillow
+
+      - name: 爬取数据 → 生成看板与日报图
+        run: |
+          python crawl_xiapu.py
+          python build_dashboard.py
+          python gen_daily_image.py
+          mkdir -p public
+          cp 霞浦发改批复看板.html public/index.html
+          cp daily_report.png public/daily_report.png
+
+      - name: 提交数据更新
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "auto: 数据更新 $(TZ=Asia/Shanghai date +'%F %H:%M')" || echo "no changes"
+          git push
+
+      - name: 发布到 GitHub Pages
+        uses: peaceiris/actions-ghpages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+
+      - name: 推送日报到微信
+        env:
+          SCKEY: ${{ secrets.SCKEY }}
+          BOARD_URL: ${{ secrets.BOARD_URL }}
+        run: python notify_serverchan.py
